@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login da Comunidade Unidos em Cristo.">
+  <title>Login | Comunidade Unidos em Cristo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-card" aria-labelledby="login-title">
+      <a href="index.html#inicio" class="login-logo" aria-label="Voltar para o início">
+        <img src="assets/logo/logo.png" alt="Comunidade Unidos em Cristo">
+      </a>
+      <h1 id="login-title">Bem-vindo de volta</h1>
+      <p>Acesse sua área da Comunidade Unidos em Cristo.</p>
+
+      <form class="login-form" action="#" method="post">
+        <label for="email">
+          E-mail
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </label>
+
+        <label for="senha">
+          Senha
+          <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+        </label>
+
+        <button class="btn btn-red login-submit" type="submit">Entrar</button>
+        <a class="login-help" href="mailto:contato@comunidadeunidosemcristo.org">Esqueci minha senha</a>
+        <a class="btn login-back" href="index.html#inicio">← Voltar ao início</a>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
