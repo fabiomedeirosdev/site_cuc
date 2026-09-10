@@ -206,6 +206,13 @@ checkoutButtons.forEach((button) => {
             url === "#"
         ) {
 
+            if (
+                button.getAttribute("href") &&
+                button.getAttribute("href") !== "#"
+            ) {
+                return;
+            }
+
             event.preventDefault();
 
             console.log(
@@ -244,35 +251,21 @@ checkoutButtons.forEach((button) => {
 
    ========================================================= */
 
-const videoLink =
-    document.querySelector(".video-wrap a");
+const videoPreview =
+    document.querySelector(".video-preview");
 
-if (videoLink) {
+if (videoPreview) {
 
-    videoLink.addEventListener(
+    videoPreview.addEventListener(
         "click",
-        (event) => {
+        () => {
+            const videoFrame =
+                videoPreview.nextElementSibling;
 
-            const videoUrl =
-                videoLink.dataset.video;
+            videoPreview.hidden = true;
+            videoFrame.hidden = false;
 
-            /*
-             * Se ainda não existir vídeo,
-             * evita abrir "#".
-             */
-
-            if (
-                !videoUrl ||
-                videoUrl === "#"
-            ) {
-
-                event.preventDefault();
-
-                console.log(
-                    "Vídeo ainda não configurado."
-                );
-
-            }
+            videoFrame.src += "?autoplay=1";
 
         }
     );
