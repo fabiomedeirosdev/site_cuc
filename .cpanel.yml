@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home1/fabi4954/fabiothomaz1753826313000.1710182.meusitehostgator.com.br/
+    - /bin/cp -R * $DEPLOYPATH
