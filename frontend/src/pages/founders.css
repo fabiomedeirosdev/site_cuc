@@ -1,0 +1,17 @@
+.founders-edit-link { margin-bottom: 25px; }
+.founders-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 42px; align-items: start; margin: 28px 0 30px; }
+.founders-portrait { margin: 0; min-width: 0; background: #fffdf8; border: 1px solid #e6d4b9; border-radius: 18px; overflow: hidden; }
+.founders-portrait img { display: block; width: 100%; height: auto; max-height: 620px; object-fit: contain; background: #f4ead8; }
+.founders-portrait figcaption { padding: 18px 22px; border-top: 1px solid #e6d4b9; color: #8b6b40; font: italic 17px Georgia, serif; }
+.founders-history { min-width: 0; padding: 10px 0; }
+.founders-story { white-space: pre-wrap; overflow-wrap: anywhere; color: #4a352a; font-size: 18px; line-height: 1.95; margin: 22px 0 30px; }
+.founders-editor { max-width: 1150px; }
+.founders-editor-fields { display: grid; gap: 24px; padding: 0; border: 0; min-width: 0; }
+.founders-editor-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 28px; align-items: start; }
+.founders-editor-columns > section { min-width: 0; display: grid; gap: 16px; }
+.founders-photo-preview { width: 100%; height: auto; max-height: 420px; object-fit: contain; border-radius: 12px; background: #f4ead8; }
+.founders-editor input[type=file] { max-width: 100%; font-size: 13px; }
+.founders-editor textarea { min-height: 480px; resize: vertical; line-height: 1.8; }
+.founders-editor-fields > .mag-button { justify-self: start; }
+@media (min-width: 950px) { .founders-portrait { position: sticky; top: 100px; } }
+@media (max-width: 850px) { .founders-layout, .founders-editor-columns { grid-template-columns: minmax(0, 1fr); gap: 25px; } .founders-story { font-size: 17px; } .founders-editor textarea { min-height: 380px; } }

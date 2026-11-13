@@ -1,0 +1,164 @@
+@media (max-width: 980px) {
+  .site-header .nav {
+    position: relative;
+  }
+
+  .site-header .menu.menu-aberto {
+    position: absolute;
+    z-index: 2;
+    top: 100%;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px 18px;
+    background: #5f0a0a;
+    box-shadow: 0 14px 24px rgb(0 0 0 / 18%);
+  }
+
+  .site-header .menu.menu-aberto a {
+    padding: 12px 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header .nav-cta {
+    display: none;
+  }
+}
+/* Ajustes restritos ao React; o CSS institucional permanece intacto. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1100;
+  padding: 10px 16px;
+  background: var(--paper);
+  color: var(--red-dark);
+  transform: translateY(-160%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+main[id], section[id], footer[id] {
+  scroll-margin-top: 90px;
+}
+
+.video-preview {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 24px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.availability-feedback:not(:empty),
+.form-feedback:not(:empty) {
+  margin-top: 18px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--red-dark);
+}
+
+.availability-feedback {
+  text-align: center;
+}
+
+.availability-feedback:empty,
+.form-feedback:empty {
+  display: none;
+}
+
+main[tabindex="-1"]:focus,
+section[tabindex="-1"]:focus,
+footer[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Espaço suficiente para a navegação antes do ponto de quebra móvel. */
+@media (min-width: 981px) and (max-width: 1180px) {
+  .site-header .nav-cta {
+    display: none;
+  }
+
+  .site-header .nav,
+  .site-header .menu {
+    gap: 16px;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .btn, .nav-cta, .menu a, .social a {
+    transition: none;
+  }
+}
+.account-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.profile-email {
+  overflow-wrap: anywhere;
+  margin: 12px 0;
+}
+
+.profile-grid .login-form {
+  margin-top: 20px;
+}
+
+.account-note {
+  margin-top: 24px;
+  color: var(--muted);
+}
+
+.account-subscription {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 24px;
+  margin-block: 24px;
+  border: 1px solid #dfc49c;
+  border-radius: 16px;
+  background: #fbf3e2;
+}
+
+.account-subscription > div { flex: 1 1 280px; min-width: 0; }
+.account-subscription h2 { font-size: 22px; color: var(--red-dark); margin-bottom: 8px; }
+.account-subscription p { color: #67584c; }
+.account-subscription .btn { max-width: 100%; text-align: center; }
+
+button:disabled {
+  cursor: wait;
+}
+
+@media (max-width: 640px) {
+  .profile-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .account-actions {
+    margin-top: 18px;
+  }
+}

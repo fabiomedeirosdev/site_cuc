@@ -1,0 +1,28 @@
+# Estado exclusivo do ambiente local. O site original permanece na raiz.
+.local/
+.env
+.env.local
+.env.production
+__pycache__/
+*.py[cod]
+# Ambientes virtuais Python
+.venv/
+venv/
+
+# Dependencias e builds React
+node_modules/
+dist/
+build/
+
+# Bancos locais
+*.sqlite3
+*.db
+
+# Segredos
+.env.*
+!.env.example
+
+# Arquivos temporarios
+.pytest_cache/
+.vite/
+*.log

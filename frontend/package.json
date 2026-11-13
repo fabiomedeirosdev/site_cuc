@@ -1,0 +1,37 @@
+{
+  "name": "cuc-platform-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test scripts/api-client.test.mjs",
+    "test:api": "node scripts/smoke-api.mjs",
+    "test:browser": "playwright test",
+    "test:management": "playwright test --config playwright.management.config.js",
+    "test:management:live": "playwright test --config playwright.management-live.config.js",
+    "test:groups:live": "playwright test --config playwright.groups-live.config.js",
+    "test:auth": "playwright test --config playwright.auth.config.js",
+    "test:profiles": "playwright test --config playwright.profiles.config.js",
+    "test:founders": "playwright test --config playwright.founders.config.js",
+    "test:editorial": "playwright test --config playwright.editorial.config.js",
+    "test:content": "playwright test --config playwright.content.config.js",
+    "test:billing": "playwright test --config playwright.billing.config.js",
+    "test:communications": "playwright test --config playwright.communications.config.js",
+    "test:routes": "node scripts/smoke-routes.mjs"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.18.5",
+    "remark-gfm": "^4.0.1",
+    "vite": "^7.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0"
+  }
+}

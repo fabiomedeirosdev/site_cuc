@@ -1,0 +1,37 @@
+html[data-theme="light"], html[data-theme="dark"], :root {
+  --primary: #760b08; --secondary: #660600; --accent: #f5bd50;
+  --primary-fg: #fff8eb; --body-fg: #32251d; --body-bg: #fcf8f1;
+  --body-quiet-color: #786352; --body-medium-color: #644b38; --body-loud-color: #760b08;
+  --header-color: #ffdf9d; --header-branding-color: #ffdf9d; --header-bg: #760b08;
+  --header-link-color: #fff2d9; --breadcrumbs-fg: #f5d9ad; --breadcrumbs-link-fg: #fff5df;
+  --breadcrumbs-bg: #8d271c; --link-fg: #760b08; --link-hover-color: #a63721;
+  --link-selected-fg: #760b08; --hairline-color: #eadbc3; --border-color: #d9c6a7;
+  --error-fg: #a72116; --message-success-bg: #e6efdf; --message-warning-bg: #faebc9;
+  --message-error-bg: #f8dfd7; --darkened-bg: #f6eedf; --selected-bg: #f3e6ca;
+  --selected-row: #faefd7; --close-button-bg: #786352; --close-button-hover-bg: #644b38;
+  --button-fg: #fff8eb; --button-bg: #760b08; --button-hover-bg: #991c12;
+  --default-button-bg: #760b08; --default-button-hover-bg: #991c12;
+  --delete-button-bg: #a32b1a; --delete-button-hover-bg: #801d10;
+  --object-tools-fg: #760b08; --object-tools-bg: #f3e6ca; --object-tools-hover-bg: #ead5af;
+}
+body { font-family: Arial, sans-serif; line-height: 1.5; }
+#header { background: linear-gradient(110deg, #780d07, #660600 65%, #8f1008); padding: 20px 30px; }
+.cuc-admin-brand { display: flex; align-items: center; gap: 16px; }
+.cuc-admin-brand > span { font-size: 36px; color: #f5bd50; }
+.cuc-admin-brand > a { color: #fff8eb !important; text-transform: uppercase; font-weight: 700; font-size: 15px; line-height: 1.2; }
+.cuc-admin-brand small { color: #f5d9ad; border-left: 1px solid #b0654b; padding-left: 18px; }
+.cuc-admin-links { padding: 10px; font-weight: 600; font-size: 13px; }
+h1, h2, .module caption { font-family: Georgia, serif; }
+h1 { font-size: 32px; font-weight: 700; }
+.module, #changelist, .submit-row, fieldset.module { border: 1px solid #eadbc3; border-radius: 10px; background: #fffdf8; overflow: hidden; }
+.module h2, .module caption, .inline-group h2 { background: #760b08; color: #fff2d9; padding: 14px; }
+.module th, .module td, .form-row { padding: 14px; }
+.button, input[type=submit], input[type=button], .submit-row input, a.button { border-radius: 7px; padding: 12px 20px; font-weight: 600; }
+input:not([type=checkbox]):not([type=submit]), textarea, select { border: 1px solid #d9c6a7; border-radius: 7px; padding: 10px; background: #fffefa; color: #32251d; }
+#nav-sidebar { background: #fffaf0; border-color: #eadbc3; }
+#nav-sidebar .current-model { background: #f3e6ca; }
+.submit-row { padding: 18px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid #d38c17; outline-offset: 3px; }
+.login #container { border: 1px solid #eadbc3; border-radius: 14px; box-shadow: 0 10px 35px #760b0810; }
+.login .cuc-admin-brand small, .theme-toggle { display: none; }
+@media (max-width: 767px) { #header { padding: 16px; } .cuc-admin-brand small { display: none; } .cuc-admin-links { text-align: center; } h1 { font-size: 26px; } }

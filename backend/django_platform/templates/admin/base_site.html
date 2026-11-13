@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block title %}{{ title }} | Comunidade Unidos em Cristo{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'core/administration.css' %}">{% endblock %}
+{% block branding %}<div class="cuc-admin-brand"><span aria-hidden="true">✦</span><a href="{{ site_url }}">Comunidade<br>Unidos em Cristo</a><small>Administração</small></div>{% endblock %}
+{% block nav-global %}<nav class="cuc-admin-links" aria-label="Gestão da comunidade"><a href="{{ site_url }}">Painel da comunidade →</a></nav>{% endblock %}

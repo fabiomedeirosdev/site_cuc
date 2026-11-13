@@ -1,0 +1,53 @@
+import { test, expect } from "@playwright/test";
+import { mkdir } from "node:fs/promises";
+
+test("menu Sobre abre Fundadores e desenvolvedor edita foto, título e história", async ({ page, context, browser }, info) => {
+  const viewport = info.project.name;
+  const title = `Fundadores e missão ${viewport}`;
+  const body = "Uma história de fé e acolhimento.\n\nOs fundadores caminham com a comunidade.\n<script>window.foundersUnsafe=true</script>";
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await context.route("**/*", (route) => new URL(route.request().url()).hostname === "127.0.0.1" ? route.continue() : route.abort());
+  await page.goto("/");
+  if (page.viewportSize().width <= 980) await page.getByRole("button", { name: "Abrir menu", exact: true }).click();
+  const navigation = page.getByRole("navigation", { name: "Navegação principal", exact: true });
+  await navigation.getByRole("button", { name: "Sobre", exact: true }).click();
+  await navigation.getByRole("link", { name: "Fundadores", exact: true }).click();
+  await expect(page).toHaveURL(/fundadores.html$/);
+  await expect(page.locator(".founders-portrait img")).toBeVisible();
+  await page.goto("/painel/fundadores");
+  await expect(page).toHaveURL(/login.html$/);
+  await page.getByLabel("E-mail", { exact: true }).fill(`${viewport}.founders@example.invalid`);
+  await page.getByLabel("Senha", { exact: true }).fill("FoundersBrowser!81-Pass");
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
+  await expect(page).toHaveURL(/painel\/fundadores$/);
+  await page.getByRole("textbox", { name: "Título da página", exact: true }).fill(title);
+  await page.getByRole("textbox", { name: "História dos fundadores", exact: true }).fill(body);
+  await page.getByLabel("Escolher foto dos fundadores", { exact: true }).setInputFiles(process.env.CUC_FOUNDERS_PHOTO);
+  await page.getByRole("textbox", { name: "Descrição da foto", exact: true }).fill(`Foto dos fundadores ${viewport}`);
+  await page.getByRole("button", { name: "Salvar e publicar", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Página dos fundadores salva e publicada" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  const saved = await (await page.request.get("/api/founders")).json();
+  expect(saved.title).toBe(title);
+  expect(saved.photo_url).toMatch(/^\/media\/institutional\/founders\/.*\.jpg$/);
+  await page.getByRole("link", { name: "Ver página pública", exact: false }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
+  await expect(page.locator(".founders-story")).toHaveText(body);
+  await expect(page.locator(".founders-portrait img")).toHaveJSProperty("naturalWidth", 600);
+  expect(await page.evaluate(() => window.foundersUnsafe)).toBeUndefined();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await mkdir("../.local/founders/screenshots", { recursive: true });
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await page.screenshot({ path: `../.local/founders/screenshots/${viewport}-fundadores.png`, fullPage: true });
+  const guest = await browser.newContext({ baseURL: "http://127.0.0.1:5185", viewport: page.viewportSize() });
+  try {
+    await guest.route("**/*", (route) => new URL(route.request().url()).hostname === "127.0.0.1" ? route.continue() : route.abort());
+    const other = await guest.newPage();
+    await other.goto("/fundadores.html");
+    await expect(other.getByRole("heading", { level: 1 })).toHaveText(title);
+    expect((await other.request.get("/api/management/founders")).status()).toBe(403);
+    await expect(other.getByRole("link", { name: "Editar página dos fundadores", exact: true })).toHaveCount(0);
+  } finally { await guest.close(); }
+  expect(errors).toEqual([]);
+});

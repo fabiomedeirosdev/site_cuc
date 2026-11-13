@@ -1,0 +1,26 @@
+.billing-offer { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; border: 1px solid #dfc49c; border-radius: 22px; overflow: hidden; background: #fffbf2; }
+.billing-offer > div { padding: 36px; }
+.billing-offer > div:first-child { color: white; background: linear-gradient(120deg, #980b08, #620702); }
+.billing-offer > div:first-child h2, .billing-offer > div:first-child .mag-kicker { color: #fff1cd; }
+.billing-offer h2 { line-height: 1.2; }
+.billing-price { font-size: 48px; font-weight: 800; margin-block: 25px; }
+.billing-price span { display: block; font-size: 14px; font-weight: 400; }
+.billing-offer ul, .billing-offer ol { padding-left: 22px; line-height: 1.7; }
+.billing-offer li { padding-bottom: 12px; }
+.billing-offer-action > p { margin-block: 20px; color: #75634c; line-height: 1.7; font-size: 14px; }
+.billing-consent { display: flex !important; flex-direction: row !important; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.6; margin-block: 22px; font-weight: 400; }
+.billing-consent input { flex: 0 0 18px; width: 18px; height: 18px; margin-top: 3px; accent-color: #760b08; }
+.billing-consent a { color: #760b08; text-decoration: underline; }
+.billing-note { padding: 14px; border-radius: 12px; background: #f8edda; color: #684a25; font-size: 13px; line-height: 1.6; margin-block: 16px; }
+.billing-offer-action > .mag-text-link { margin-top: 24px; }
+.billing-access { background: #f6eccf; padding: 22px; border-radius: 14px; color: #5a3514; margin-block: 24px; line-height: 1.6; }
+.billing-subscription-card { border: 1px solid #dfc49c; border-radius: 18px; padding: 28px; margin-block: 24px; background: #fffdf8; }
+.billing-subscription-card > p { line-height: 1.7; margin-block: 12px; }
+.billing-subscription-card > button { margin-top: 15px; }
+.billing-requests { margin-top: 30px; border-top: 1px solid #ead8c1; padding-top: 20px; }
+.billing-requests summary { cursor: pointer; color: #760b08; font-weight: 700; }
+.billing-requests p { line-height: 1.7; font-size: 14px; margin-block: 16px; }
+.billing-requests form { display: grid; gap: 18px; }
+.billing-requests label { display: grid; gap: 8px; font-size: 14px; }
+.billing-requests ul { padding-left: 20px; font-size: 12px; overflow-wrap: anywhere; line-height: 1.8; margin-top: 20px; }
+@media (max-width: 760px) { .billing-offer { grid-template-columns: minmax(0, 1fr); gap: 0; } .billing-offer > div, .billing-subscription-card { padding: 24px; } .billing-price { font-size: 40px; } }

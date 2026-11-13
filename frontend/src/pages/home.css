@@ -1,0 +1,218 @@
+.mag-home { --wine: #760b08; --accent: #a70000; --honey: #f5bd50; background: #fcf8f1; color: #231613; line-height: 1.35; }
+.mag-home button, .mag-home input { font-family: inherit; }
+.mag-home button { cursor: pointer; }
+.mag-home button, .mag-home a, .mag-home input { -webkit-tap-highlight-color: transparent; }
+.mag-home :focus-visible { outline: 3px solid #d38c17; outline-offset: 4px; }
+.mag-home svg { width: 24px; height: 24px; flex: none; }
+.mag-container { width: min(1180px, 92%); margin-inline: auto; }
+.mag-home section[id], .mag-home footer[id] { scroll-margin-top: 88px; }
+.mag-header { position: sticky; top: 0; z-index: 100; color: white; background: linear-gradient(110deg, #780d07, #660600 65%, #8f1008); box-shadow: 0 2px 12px #40000020; }
+.mag-nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.mag-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; color: white; font-size: 14px; font-weight: 700; text-transform: uppercase; line-height: 1.12; }
+.mag-brand img { width: 46px; height: 52px; object-fit: contain; }
+.mag-menu { display: flex; gap: 24px; align-items: center; font-size: 14px; font-weight: 600; }
+.mag-menu a { display: flex; align-items: center; gap: 5px; padding-block: 22px; }
+.mag-menu a:hover, .mag-menu .is-active { color: #ffcf6b; }
+.mag-menu > a, .mag-about-toggle { white-space: nowrap; }
+.mag-about { position: relative; }
+.mag-about-toggle { display: flex; align-items: center; gap: 5px; padding-block: 22px; border: 0; color: inherit; background: transparent; font: inherit; }
+.mag-about-toggle:hover, .mag-about-toggle[aria-expanded="true"] { color: #ffcf6b; }
+.mag-about-panel { position: absolute; top: 100%; left: 0; min-width: 220px; padding: 8px; border: 1px solid #d7b277; border-radius: 12px; background: #fff8eb; color: #760b08; box-shadow: 0 10px 25px #30000030; z-index: 110; }
+.mag-about-panel[hidden] { display: none; }
+.mag-menu .mag-about-panel a { padding: 12px; border-radius: 7px; white-space: nowrap; }
+.mag-menu .mag-about-panel a:hover { color: #760b08; background: #f7e7c9; }
+@media (min-width: 981px) and (max-width: 1280px) {
+  .mag-nav { gap: 12px; }
+  .mag-menu { gap: 14px; font-size: 12px; }
+  .mag-nav .mag-brand { font-size: 11px; }
+  .mag-nav-actions { gap: 5px; }
+  .mag-nav-actions .mag-button { padding-inline: 13px; }
+}
+.mag-nav-actions { display: flex; align-items: center; gap: 12px; }
+.mag-search-button, .mag-login { background: #4a050558; border: 0; color: white; display: flex; gap: 6px; align-items: center; border-radius: 24px; padding: 8px; }
+.mag-login { padding-inline: 10px; font-size: 14px; font-weight: 600; }
+.mag-button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; width: fit-content; padding: 10px 22px; border-radius: 28px; border: 1px solid #890e0770; font-weight: 700; font-size: 14px; line-height: 1.2; box-shadow: 0 3px 5px #50100025; transition: transform .18s, box-shadow .18s; }
+.mag-button:hover { transform: translateY(-2px); box-shadow: 0 5px 10px #50100030; }
+.mag-button span { font-size: 22px; font-weight: 400; line-height: .7; }
+.mag-button.gold { background: linear-gradient(#ffe290, #f6bc45 70%, #e9a22c); color: #300b00; border-color: #efc25c; }
+.mag-button.red { background: linear-gradient(#b90908, #870000); color: white; }
+.mag-button.pale { background: #fff0c4; color: #5c0900; font-size: 12px; padding: 7px 16px; }
+.mag-menu-toggle { display: none; color: white; border: 0; background: none; font-size: 26px !important; }
+.mag-hero { position: relative; overflow: hidden; background: linear-gradient(110deg, #f2e4cc, #f0dfc3 60%, #ead7b8); }
+.mag-hero-grid { display: grid; grid-template-columns: 38% 29% 33%; align-items: center; min-height: 355px; position: relative; }
+.mag-identity { text-align: center; position: relative; z-index: 2; padding: 22px 28px 25px 0; }
+.mag-identity > img { width: 220px; max-width: 90%; height: 120px; object-fit: contain; margin: 0 auto 8px; }
+.mag-identity h1 { text-transform: uppercase; color: #aa0e10; font-size: clamp(23px, 2.7vw, 35px); font-weight: 800; letter-spacing: -1.2px; line-height: 1.02; }
+.mag-identity h1 span { color: #816020; }
+.mag-ribbon { display: inline-block; background: linear-gradient(#bc8c31, #916212); border-radius: 12px; color: white; padding: 4px 18px; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px; font-size: 20px; font-weight: 700; }
+.mag-identity p { font-size: 12px; margin-top: 13px; white-space: nowrap; }
+.mag-identity b { color: #8b5719; }
+.mag-hero-copy { border-left: 2px solid #ba7c24; position: relative; z-index: 2; padding: 0 0 0 44px; margin-block: 30px; }
+.mag-hero-copy h2 { font-family: Georgia, 'Times New Roman', serif; font-style: italic; color: var(--wine); font-size: clamp(30px, 2.8vw, 39px); line-height: 1.03; letter-spacing: -.8px; }
+.mag-hero-copy p { font-size: 16px; margin-block: 16px; }
+.mag-hero-copy .hero-actions { margin: 0; justify-content: flex-start; }
+.mag-hero-picture { position: absolute; top: 0; bottom: 0; right: calc((min(1180px, 92vw) - 100vw) / 2); width: 100%; height: 100%; pointer-events: none; }
+.mag-hero-picture img { width: auto; max-width: none; height: 100%; position: absolute; right: 0; bottom: 0; object-fit: contain; }
+.mag-feature { padding: 16px 0; background: radial-gradient(ellipse at 45% 0, #db2625, #aa0809 55%, #790800); }
+.mag-feature-frame { position: relative; padding-inline: 34px; }
+.mag-feature-card { position: relative; min-height: 270px; border-radius: 22px; overflow: hidden; color: white; background: #34180c; }
+.mag-feature-card > img { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+.mag-feature-shade { position: absolute; inset: 0; background: linear-gradient(90deg, #400500f2, #450a00ce 30%, #32110035 62%, #32110015); }
+.mag-feature-copy { position: relative; z-index: 1; padding: 22px 8%; max-width: 520px; }
+.mag-tag { display: inline-block; border-radius: 11px; color: #341900; background: linear-gradient(#ffd784, #f0b43c); padding: 4px 14px; font-size: 12px; font-weight: 700; }
+.mag-feature-copy > .mag-tag { color: white; background: linear-gradient(#ac842c, #8b641a); box-shadow: 0 2px 4px #0003; }
+.mag-feature h2 { font: 700 clamp(26px, 3.1vw, 40px)/1.02 Georgia, serif; margin: 12px 0; text-shadow: 0 2px 5px #0003; }
+.mag-feature-copy p { max-width: 300px; font-size: 15px; line-height: 1.25; margin-bottom: 13px; }
+.mag-dots { position: absolute; z-index: 2; bottom: 18px; left: 50%; display: flex; gap: 10px; transform: translateX(-50%); }
+.mag-dots button { border: 1px solid white; background: #1c100860; width: 10px; height: 10px; border-radius: 50%; padding: 0; position: relative; }
+.mag-dots button::after { content: ''; position: absolute; inset: -9px; }
+.mag-dots .selected { background: #f5bd50; border-color: #f5bd50; }
+.mag-carousel-arrow { position: absolute; z-index: 3; top: 50%; transform: translateY(-50%); width: 43px; height: 43px; border: 2px solid #fff; border-radius: 50%; background: #66040035; color: white; font-size: 38px !important; line-height: .7; box-shadow: 0 2px 5px #0002; }
+.mag-carousel-arrow.previous { left: -10px; }
+.mag-carousel-arrow.next { right: -10px; }
+.mag-body { padding-bottom: 18px; }
+.mag-shortcuts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; padding: 15px 20px 32px; }
+.mag-shortcuts > * { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 112px; border: 1px solid #d6a589; background: linear-gradient(#fffdf9, #faf4e9); border-radius: 24px; box-shadow: 0 3px 5px #7d421d20; text-align: center; font-size: 14px; font-weight: 700; color: #3e0c06; transition: background .2s, transform .2s; }
+.mag-shortcuts > *:hover { background: #fff0d2; transform: translateY(-3px); }
+.mag-shortcuts svg { width: 35px; height: 35px; color: #970909; }
+.mag-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+.mag-section-heading h2, .mag-groups h2 { color: #650a06; font-size: 28px; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+.mag-publications > .mag-section-heading h2::before { content: ''; width: 4px; height: 28px; background: #cc911f; border-radius: 3px; margin-right: 7px; }
+.mag-text-link { padding: 4px 0; color: #8a0000; background: none; border: 0; font-size: 12px !important; font-weight: 700 !important; display: flex; align-items: center; gap: 8px; }
+.mag-text-link span { font-size: 22px; }
+.mag-publication-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.mag-home #noticias { background: transparent; }
+.mag-publication { border-radius: 15px; background: #fffdfa; overflow: hidden; box-shadow: 0 3px 5px #34160624; }
+.mag-publication > button, .mag-publication > a { width: 100%; height: 100%; background: none; border: 0; text-align: left; display: block; color: inherit; }
+.mag-publication-image { height: 155px; position: relative; }
+.mag-publication-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.mag-publication:nth-child(2) img { object-position: center 35%; }
+.mag-publication:nth-child(3) img { object-position: center 25%; }
+.mag-publication:hover img { transform: scale(1.025); }
+.mag-publication-image .mag-tag { position: absolute; bottom: 0; left: 11px; border-radius: 10px 10px 0 0; }
+.mag-publication-copy { padding: 12px 18px 17px; }
+.mag-publication h3 { font: 700 24px/1.07 Georgia, serif; min-height: 52px; color: #17100d; }
+.mag-publication-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 13px; font-size: 11px; color: #62534b; }
+.mag-publication-meta > span { display: flex; align-items: center; gap: 6px; }
+.mag-publication-meta svg { width: 14px; height: 14px; }
+.mag-search-panel { margin-bottom: 20px; padding: 16px; border: 1px solid #ddc49e; border-radius: 14px; background: #fffaf0; }
+.mag-search-panel label { font-size: 13px; font-weight: 700; }
+.mag-search-panel > div { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.mag-search-panel input { min-width: 0; flex: 1; border: 1px solid #d6b493; padding: 10px; border-radius: 6px; }
+.mag-search-panel button { background: none; border: 0; font-size: 24px; }
+.mag-empty { padding: 30px; text-align: center; }
+.mag-groups { display: grid; grid-template-columns: 30% minmax(0, 1fr); gap: 24px; align-items: center; padding-block: 34px 22px; }
+.mag-groups-intro h2 { font-size: 25px; }
+.mag-groups-intro h2 svg { color: #b57a1c; }
+.mag-groups-intro p { font-size: 12px; line-height: 1.5; margin: 8px 0 14px 35px; max-width: 260px; }
+.mag-groups-intro .mag-button { margin-left: 35px; padding: 9px 18px; font-size: 12px; }
+.mag-group-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.mag-group { display: block; border-radius: 13px; height: 132px; overflow: hidden; border: 0; position: relative; color: white; background: #511b0e; text-align: center; }
+.mag-group::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 20%, #170900d9); }
+.mag-group img { height: 100%; width: 100%; object-fit: cover; }
+.mag-group span { position: absolute; z-index: 1; bottom: 12px; left: 5px; right: 5px; font-weight: 700; font-size: 13px; line-height: 1.12; text-shadow: 0 1px 3px #000; }
+.mag-lower-grid { display: grid; grid-template-columns: 57% minmax(0, 1fr); gap: 26px; padding-block: 14px 16px; border-top: 1px solid #efe1cd; }
+.mag-subscription { position: relative; overflow: hidden; min-height: 248px; border-radius: 18px; background: #8c0807 url('../../../assets/magazine/Ondas Vermelhas em Degradé Glossy.png') center / cover no-repeat; color: white; }
+.mag-subscription-copy { position: relative; z-index: 2; width: 55%; padding: 20px 0 16px 9%; }
+.mag-subscription h2 { font-size: 25px; line-height: 1.05; }
+.mag-subscription p { font-size: 14px; line-height: 1.25; margin-top: 7px; }
+.mag-price { display: flex; flex-direction: column; align-items: center; width: fit-content; background: linear-gradient(#ffdc81, #edab33); color: #3a0b00; padding: 5px 17px; border-radius: 13px; margin-block: 12px; }
+.mag-price small { font-size: 10px; font-weight: 700; }
+.mag-price strong { font-size: 29px; line-height: 1; }
+.mag-subscription .mag-button { padding-block: 8px; }
+.mag-devices { position: absolute; width: 44%; height: 92%; right: 2%; bottom: 4%; }
+.mag-devices img { width: 100%; height: 100%; object-fit: contain; object-position: right bottom; }
+
+
+
+
+
+
+
+
+
+
+
+.mag-events { padding-left: 26px; border-left: 1px solid #e2c5a4; }
+.mag-events .mag-section-heading { margin-bottom: 12px; }
+.mag-events h2 { font-size: 23px; white-space: nowrap; }
+.mag-events h2 svg { color: #bc7a12; width: 23px; }
+.mag-events .mag-text-link { white-space: nowrap; font-size: 11px !important; }
+.mag-event { display: flex; align-items: center; gap: 16px; padding-block: 5px 8px; }
+.mag-event + .mag-event { border-top: 1px solid #eddfcb; }
+.mag-event-date { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 72px; height: 49px; border-radius: 9px; background: #ffedbf; color: #790a06; box-shadow: 0 2px 3px #70450f18; }
+.mag-event-date strong { font-size: 23px; line-height: 1; }
+.mag-event-date span { font-size: 10px; font-weight: 700; }
+.mag-event h3 { font-size: 13px; }
+.mag-event p { font-size: 11px; margin-top: 4px; color: #5a4d44; }
+.mag-newsletter { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; padding: 15px 5%; border: 1px solid #eac995; border-radius: 16px; background: linear-gradient(#fff8e8, #f8ead0); box-shadow: 0 3px 4px #70501a13; }
+.mag-newsletter > svg { color: #910907; width: 40px; height: 40px; }
+.mag-newsletter h2 { font-size: 18px; color: #40100b; }
+.mag-newsletter p { font-size: 11px; margin-top: 3px; }
+.mag-newsletter form { display: flex; flex: 1; min-width: 260px; margin-left: auto; max-width: 460px; position: relative; }
+.mag-newsletter input { width: 100%; min-width: 0; background: white; border: 1px solid #dfbc8f; border-radius: 30px; padding: 10px 145px 10px 18px; font-size: 12px; }
+.mag-newsletter form .mag-button { position: absolute; right: 0; top: 0; bottom: 0; font-size: 12px; }
+.mag-newsletter-feedback { width: 100%; color: #761008; }
+.mag-footer { padding: 24px 0 12px; background: linear-gradient(110deg, #790c06, #670700 60%, #83100a); color: white; }
+.mag-footer-grid { display: grid; grid-template-columns: 28% 15% 15% 20% minmax(0, 1fr); gap: 18px; }
+.mag-footer-brand { border-right: 2px solid #dfb74f; margin-right: 30px; display: flex; align-items: center; }
+.mag-footer .mag-brand { font-size: 16px; }
+.mag-footer .mag-brand img { width: 64px; height: 64px; }
+.mag-footer h2 { font-size: 13px; margin-bottom: 6px; }
+.mag-footer .footer-links { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; margin: 0; }
+.mag-footer .footer-links a, .mag-footer button { font-size: 12px; color: white; border: 0; background: none; text-align: left; padding: 0; line-height: 1.4; }
+.mag-footer a:hover, .mag-footer button:hover { color: #ffdc8b; }
+.mag-social-column { border-left: 2px solid #dfb74f; padding-left: 30px; }
+.mag-home .mag-social { display: flex; gap: 10px; margin-top: 14px; }
+.mag-home .mag-social a { width: 31px; height: 31px; border-radius: 8px; background: #fffcf4; color: #790c06; font-size: 23px; display: flex; align-items: center; justify-content: center; }
+.mag-copyright { text-align: center; font-size: 11px; color: #f4d6c4; line-height: 1.7; margin-top: 20px; padding-inline: 16px; }
+.mag-copyright p + p { margin-top: 4px; }
+.mag-copyright a { text-decoration: underline; text-underline-offset: 3px; }
+.mag-dialog { position: fixed; inset: 0; margin: auto; border: 1px solid #d5b082; padding: 0; border-radius: 20px; width: min(620px, 92vw); max-height: 85dvh; color: #321b11; background: #fffbf3; box-shadow: 0 20px 100px #21000060; }
+.mag-dialog::backdrop { background: #250800b0; backdrop-filter: blur(4px); }
+.mag-dialog > img { width: 100%; max-height: 260px; object-fit: cover; }
+.mag-dialog-copy { padding: 30px; }
+.mag-dialog-copy h2 { font: 700 30px/1.1 Georgia, serif; color: #760b08; margin: 10px 0 18px; }
+.mag-dialog-copy p { line-height: 1.7; white-space: pre-line; }
+.mag-kicker { text-transform: uppercase; color: #966818; font-size: 10px; letter-spacing: 1.5px; }
+.mag-dialog-close { position: absolute; top: 12px; right: 12px; border: 1px solid #bd9266; border-radius: 50%; width: 36px; height: 36px; background: #fff9ed; color: #760b08; font-size: 25px !important; z-index: 2; }
+.mag-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 1200px) {
+  .mag-nav { gap: 15px; } .mag-menu { gap: 16px; font-size: 13px; } .mag-brand { font-size: 12px; } .mag-nav-actions { gap: 7px; } .mag-nav-actions .mag-button { font-size: 12px; padding-inline: 16px; }
+  .mag-hero-copy { padding-left: 34px; } .mag-ribbon { font-size: 17px; } .mag-identity p { font-size: 11px; }
+  .mag-events { padding-left: 20px; } .mag-events h2 { font-size: 21px; } .mag-events .mag-section-heading { gap: 6px; } .mag-footer .mag-brand { font-size: 13px; } .mag-social-column { padding-left: 18px; }
+}
+@media (max-width: 1100px) {
+  .mag-nav { min-height: 64px; position: relative; gap: 12px; } .mag-menu { gap: 14px; font-size: 12px; } .mag-brand { font-size: 11px; } .mag-nav-actions { gap: 5px; } .mag-nav-actions .mag-button { padding-inline: 13px; }
+  .mag-hero-grid { min-height: 320px; } .mag-hero-copy p { font-size: 14px; } .mag-identity { padding-right: 20px; } .mag-identity h1 { font-size: 29px; } .mag-hero-copy h2 { font-size: 32px; }
+  .mag-shortcuts { gap: 20px; } .mag-shortcuts > * { min-height: 105px; font-size: 13px; } .mag-feature-card { min-height: 255px; }
+  .mag-publication h3 { font-size: 22px; } .mag-publication-image { height: 147px; } .mag-publication-grid { gap: 20px; } .mag-publication-meta { font-size: 10px; }
+  .mag-events .mag-section-heading { flex-wrap: wrap; margin-bottom: 6px; } .mag-events h2 { font-size: 22px; } .mag-event { gap: 12px; } .mag-event-date { min-width: 62px; }
+  .mag-footer-grid { grid-template-columns: 27% 15% 14% 20% minmax(0, 1fr); gap: 12px; } .mag-footer-brand { margin-right: 15px; } .mag-home .mag-social { gap: 7px; flex-wrap: wrap; } .mag-home .mag-social a { width: 27px; height: 27px; font-size: 20px; }
+}
+@media (max-width: 980px) {
+  .mag-menu { display: none; } .mag-menu-toggle { display: block; }
+  .mag-about-toggle { width: 100%; padding: 11px; justify-content: space-between; }
+  .mag-about-panel { position: static; min-width: 0; margin-bottom: 10px; }
+  .mag-nav-actions { margin-left: auto; } .mag-menu.is-open { position: absolute; top: 100%; left: 0; right: 0; display: flex; flex-direction: column; align-items: stretch; background: #700b05; padding: 10px 18px; gap: 0; border-radius: 0 0 12px 12px; box-shadow: 0 12px 20px #30000030; } .mag-menu a { padding: 11px; }
+}
+@media (max-width: 800px) {
+  .mag-hero-grid { grid-template-columns: 48% 52%; min-height: 340px; } .mag-hero-picture { width: 100%; opacity: .35; } .mag-hero-copy { padding-left: 25px; } .mag-hero-copy h2 { font-size: 36px; } .mag-identity p { white-space: normal; } .mag-identity h1 { font-size: 28px; } .mag-ribbon { font-size: 15px; }
+  .mag-shortcuts { gap: 12px; padding-inline: 0; } .mag-shortcuts > * { border-radius: 16px; font-size: 11px; min-height: 98px; } .mag-shortcuts svg { width: 29px; height: 29px; }
+  .mag-section-heading h2 { font-size: 24px; } .mag-text-link { font-size: 10px !important; } .mag-publication-grid { gap: 14px; } .mag-publication h3 { font-size: 20px; } .mag-publication-copy { padding: 12px; } .mag-publication-image { height: 130px; }
+  .mag-groups { grid-template-columns: 1fr; gap: 18px; } .mag-groups-intro p { max-width: none; margin-left: 0; } .mag-groups-intro .mag-button { margin-left: 0; } .mag-group { height: 145px; }
+  .mag-lower-grid { grid-template-columns: 1fr; gap: 24px; } .mag-subscription { min-height: 260px; } .mag-events { border-left: 0; padding-left: 0; } .mag-events .mag-section-heading { flex-wrap: nowrap; } .mag-event { padding-block: 8px; } .mag-event h3 { font-size: 15px; } .mag-event p { font-size: 12px; } .mag-newsletter { gap: 12px; padding: 18px; } .mag-newsletter form { max-width: none; flex-basis: 100%; }
+  .mag-footer-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } .mag-footer-brand { grid-column: 1 / -1; border: 0; } .mag-footer .mag-brand { font-size: 15px; } .mag-social-column { padding-left: 15px; }
+}
+@media (max-width: 520px) {
+  .mag-container { width: 91%; } .mag-nav { gap: 10px; } .mag-brand { font-size: 10px; gap: 6px; } .mag-brand img { width: 34px; height: 42px; } .mag-nav-actions > .mag-button { display: none; } .mag-login { padding: 7px; } .mag-login span { display: none; } .mag-search-button svg, .mag-login svg { width: 21px; height: 21px; } .mag-menu-toggle { padding: 0 2px; }
+  .mag-hero-grid { grid-template-columns: 1fr; padding-block: 20px 25px; } .mag-identity { padding: 0 0 22px; } .mag-identity > img { width: 185px; height: 100px; } .mag-identity h1 { font-size: 29px; } .mag-ribbon { font-size: 17px; } .mag-identity p { font-size: 11px; } .mag-hero-copy { border-left: 0; border-top: 1px solid #bb8a3c; margin: 0 12px; padding: 22px 5px 0; } .mag-hero-copy h2 { font-size: 34px; } .mag-hero-copy h2 br:last-child { display: none; } .mag-hero-copy p { max-width: 230px; } .mag-hero-picture { top: 280px; height: calc(100% - 280px); width: 100%; opacity: .28; }
+  .mag-feature { padding-block: 12px; } .mag-feature-frame { padding-inline: 12px; } .mag-feature-card { min-height: 300px; border-radius: 16px; } .mag-feature-copy { padding: 24px 28px 46px; } .mag-feature h2 { font-size: 30px; } .mag-feature-copy p { font-size: 13px; } .mag-feature-shade { background: linear-gradient(90deg, #400500eb, #450a00a0); } .mag-carousel-arrow { width: 33px; height: 33px; font-size: 30px !important; } .mag-carousel-arrow.previous { left: -3px; } .mag-carousel-arrow.next { right: -3px; }
+  .mag-shortcuts { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 16px 0 25px; gap: 12px; } .mag-shortcuts > * { font-size: 12px; min-height: 100px; } .mag-shortcuts svg { width: 31px; height: 31px; }
+  .mag-section-heading { align-items: flex-start; } .mag-section-heading h2 { font-size: 23px; } .mag-publications > .mag-section-heading { flex-wrap: wrap; gap: 4px; } .mag-publications > .mag-section-heading h2::before { height: 24px; margin-right: 1px; } .mag-text-link { font-size: 11px !important; } .mag-publication-grid { grid-template-columns: 1fr; gap: 20px; } .mag-publication-image { height: 185px; } .mag-publication h3 { font-size: 25px; min-height: 0; } .mag-publication-copy { padding: 15px 18px 18px; } .mag-publication-meta { font-size: 11px; }
+  .mag-group-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; } .mag-group { grid-column: span 2; height: 125px; } .mag-group:nth-last-child(-n+2) { grid-column: span 3; } .mag-group span { font-size: 12px; }
+  .mag-subscription { min-height: 248px; } .mag-subscription-copy { padding-left: 20px; } .mag-subscription h2 { font-size: 21px; } .mag-subscription p { font-size: 11px; } .mag-devices { right: 2%; width: 43%; height: 84%; }        .mag-price { padding-inline: 12px; } .mag-price strong { font-size: 26px; } .mag-subscription .mag-button { font-size: 12px; }
+  .mag-events h2 { font-size: 20px; } .mag-events h2 svg { width: 20px; } .mag-events .mag-text-link { font-size: 10px !important; } .mag-event h3 { font-size: 13px; } .mag-event p { font-size: 10px; } .mag-newsletter > svg { width: 32px; } .mag-newsletter h2 { font-size: 16px; } .mag-newsletter p { font-size: 10px; } .mag-newsletter form { min-width: 0; } .mag-newsletter input { padding-left: 12px; padding-right: 116px; } .mag-newsletter form .mag-button { padding-inline: 14px; font-size: 11px; }
+  .mag-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } .mag-social-column { border: 0; padding-left: 0; } .mag-copyright { padding-inline: 20px; font-size: 9px; } .mag-dialog-copy { padding: 24px; } .mag-dialog-copy h2 { font-size: 25px; }
+}
+@media (prefers-reduced-motion: reduce) { .mag-home *, .mag-home *::after { transition: none !important; scroll-behavior: auto !important; } }

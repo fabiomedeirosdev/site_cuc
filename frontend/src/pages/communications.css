@@ -1,0 +1,40 @@
+.communications-list { display: grid; gap: 22px; margin-block: 26px; }
+.communications-card { padding: 28px; background: #fffdf8; border: 1px solid #dfc49c; border-radius: 18px; margin-block: 22px; min-width: 0; }
+.communications-list .communications-card { margin: 0; }
+.communications-card h2, .communications-card h3 { margin-block: 10px 16px; color: #760b08; overflow-wrap: anywhere; }
+.communications-card p { margin-block: 12px; line-height: 1.7; overflow-wrap: anywhere; }
+.communications-text { white-space: pre-wrap; }
+.communication-image-field { display: grid; gap: 12px; min-width: 0; border: 1px solid #dfc49c; border-radius: 12px; padding: 18px; }
+.communication-image-field legend { color: #760b08; font-weight: 700; padding-inline: 8px; }
+.communication-image-preview { display: block; width: 100%; height: auto; max-height: 650px; object-fit: contain; margin-block: 16px; background: #f6eee1; border-radius: 10px; }
+.communication-image-field input[type=file] { max-width: 100%; font: inherit; font-size: 13px; }
+.communication-remove-image { border: 0; background: transparent; text-align: left; padding: 8px 0; }
+.mag-mural-grid .communication-image-preview { max-height: 300px; }
+.communications-tabs { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-block: 25px; }
+.communications-tabs button[aria-pressed="true"] { background: #760b08; color: #fff5df; }
+.communications-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.communications-fields input { max-width: 100%; }
+.event-cancelled { border-color: #b84935; }
+.event-audience { display: inline-block; color: #760b08; background: #f6e9ce; border-radius: 7px; padding: 4px 8px; font-size: 12px; font-weight: 700; }
+.communications-field-help { font-size: 13px; color: #67584c; line-height: 1.6; }
+.communications-card[id] { scroll-margin-top: 130px; }
+.newsletter-preview { display: block; width: 100%; min-height: 650px; border: 1px solid #dfc49c; border-radius: 12px; margin-top: 25px; background: #f5eee3; }
+.newsletter-consent { display: flex !important; flex-direction: row !important; gap: 10px; align-items: flex-start; line-height: 1.6; font-size: 13px; margin-block: 18px; cursor: pointer; }
+.newsletter-consent input { width: 18px !important; height: 18px; flex: 0 0 18px; accent-color: #760b08; margin-top: 2px; }
+.newsletter-consent a { text-decoration: underline; }
+.mag-newsletter .newsletter-signup { flex: 1; min-width: 0; }
+.mag-newsletter .newsletter-signup form { display: block; max-width: none; min-width: 0; }
+.newsletter-signup-row { display: flex; gap: 8px; }
+.mag-newsletter .newsletter-signup-row input { flex: 1; min-width: 0; padding-right: 12px; }
+.mag-newsletter .newsletter-signup form .mag-button { position: static; flex-shrink: 0; }
+.newsletter-signup .newsletter-consent { margin-bottom: 0; }
+.newsletter-signup .mag-newsletter-feedback:empty { display: none; }
+.mag-mural { margin-block: 30px; }
+.mag-mural-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.mag-mural-grid article { padding: 20px; background: #fffdf8; border: 1px solid #e2cba9; border-radius: 14px; min-width: 0; }
+.mag-mural-grid h3 { font-family: Georgia, serif; margin-block: 8px; overflow-wrap: anywhere; }
+.mag-mural-grid p { font-size: 13px; line-height: 1.6; }
+.editorial-nav nav { flex-wrap: wrap; }
+.mag-event > div:last-child { min-width: 0; }
+.mag-event h3, .mag-event p { overflow-wrap: anywhere; }
+@media (max-width: 640px) { .communications-card { padding: 20px; } .communications-fields, .mag-mural-grid { grid-template-columns: minmax(0, 1fr); } .newsletter-signup-row { flex-wrap: wrap; } .newsletter-signup-row input { flex-basis: 100%; } .newsletter-signup-row .mag-button { width: 100%; } }
