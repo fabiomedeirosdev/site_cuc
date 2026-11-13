@@ -49,8 +49,8 @@ institucionais já presentes, sem gerar fotografias ou inventar pessoas:
 | Referência antiga ausente | Arquivo disponível aproveitado |
 | --- | --- |
 | `assets/logo/hero-irh.png` | `assets/logo/rhematerapia.png` |
-| `assets/video-thumb.png` | `assets/images/cuc_comundad_unidos_em_cristo.png` |
-| `assets/quem-somos.jpg` | `assets/images/equipe_cuc.JPG` |
+| `assets/video-thumb.png` | `assets/images/comunidade_cuc.png` |
+| `assets/quem-somos.jpg` | `assets/images/equipe_cuc.jpg` |
 | `assets/fundadores-1.jpg` e `assets/fundadores-2.jpg` | `assets/images/fundadores_comunidade_cuc.png` |
 | `assets/sede.jpg` | `assets/images/sede_cuc.png` |
 

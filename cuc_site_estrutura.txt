@@ -83,7 +83,7 @@ HTML
           <div class="script">Seja um <span>Associado!</span></div>
           <a class="btn btn-red" href="#associacao">Quero me associar →</a>
           <div class="hero-mini">
-            <img src="assets/logo/hero-maria.jpg" alt="Imagem religiosa">
+            <img src="assets/logo/hero_maria.jpg" alt="Imagem religiosa">
             <img src="assets/logo/hero-irh.png" alt="Instituto Rhema">
           </div>
         </div>

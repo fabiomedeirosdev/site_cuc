@@ -112,7 +112,7 @@
 .mag-group img { height: 100%; width: 100%; object-fit: cover; }
 .mag-group span { position: absolute; z-index: 1; bottom: 12px; left: 5px; right: 5px; font-weight: 700; font-size: 13px; line-height: 1.12; text-shadow: 0 1px 3px #000; }
 .mag-lower-grid { display: grid; grid-template-columns: 57% minmax(0, 1fr); gap: 26px; padding-block: 14px 16px; border-top: 1px solid #efe1cd; }
-.mag-subscription { position: relative; overflow: hidden; min-height: 248px; border-radius: 18px; background: #8c0807 url('../../../assets/magazine/Ondas Vermelhas em Degradé Glossy.png') center / cover no-repeat; color: white; }
+.mag-subscription { position: relative; overflow: hidden; min-height: 248px; border-radius: 18px; background: #8c0807 url('../../../assets/magazine/ondas_vermelhas.png') center / cover no-repeat; color: white; }
 .mag-subscription-copy { position: relative; z-index: 2; width: 55%; padding: 20px 0 16px 9%; }
 .mag-subscription h2 { font-size: 25px; line-height: 1.05; }
 .mag-subscription p { font-size: 14px; line-height: 1.25; margin-top: 7px; }
