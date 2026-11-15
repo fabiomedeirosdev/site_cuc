@@ -86,7 +86,7 @@ class MembershipsView(AccountAPIView):
         data = serializer.validated_data
         role = data.get("role", Membership.Role.COLUMNIST)
         if role != Membership.Role.COLUMNIST and not is_editorial_admin(request.user):
-            raise PermissionDenied("Somente o administrador pode atribuir coordenadores.")
+            raise PermissionDenied("Somente o(a) administrador(a) pode atribuir coordenadores.")
         if not data.get("email"):
             raise ValidationError({"email": "Informe o e-mail de uma conta ativa já cadastrada."})
         email = data.pop("email").strip().lower()
@@ -131,7 +131,7 @@ class MembershipDetailView(MembershipsView):
         group = self.get_group(request, slug, lock=True)
         member = get_object_or_404(group.memberships.select_related("user__profile"), pk=pk)
         if member.role == Membership.Role.COORDINATOR and not is_editorial_admin(request.user):
-            raise PermissionDenied("Somente o administrador pode alterar vínculos de coordenadores.")
+            raise PermissionDenied("Somente o(a) administrador(a) pode alterar vínculos de coordenadores.")
         return member
 
     @transaction.atomic
@@ -148,7 +148,7 @@ class MembershipDetailView(MembershipsView):
                 raise ValidationError({"detail": "Nome e senha de acesso são definidos no cadastro, não no vínculo."})
             data.pop("create_account", None)
         if data.get("role", member.role) != Membership.Role.COLUMNIST and not is_editorial_admin(request.user):
-            raise PermissionDenied("Somente o administrador pode atribuir coordenadores.")
+            raise PermissionDenied("Somente o(a) administrador(a) pode atribuir coordenadores.")
         for field, value in data.items():
             setattr(member, field, value)
         member.save()

@@ -49,7 +49,7 @@ class CommunityImprovementsTests(TestCase):
         self.login(self.founder)
         for url in ["/api/management/team", "/api/management/users", "/api/management/groups", "/api/management/founders"]:
             self.assertEqual(self.client.get(url).status_code, 200, url)
-        self.assertEqual(profile_role(self.founder), ("founder", "Fundador"))
+        self.assertEqual(profile_role(self.founder), ("founder", "Fundador(a)"))
         self.assertTrue(self.client.get("/api/auth/me").json()["can_access_panel"])
 
     def test_only_developer_can_set_position_and_profile_cannot_escalate(self):

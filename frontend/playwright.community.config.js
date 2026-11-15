@@ -3,7 +3,7 @@ import base from "./playwright.config.js";
 
 export default defineConfig({
   ...base,
-  testMatch: ["home.spec.js", "community-improvements.spec.js"],
+  testMatch: ["home.spec.js", "community-improvements.spec.js", "notifications.spec.js"],
   outputDir: "../.local/community/browser-results",
   reporter: [["list"]],
   use: { ...base.use, baseURL: "http://127.0.0.1:5187" },

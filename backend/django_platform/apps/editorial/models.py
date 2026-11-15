@@ -35,11 +35,11 @@ class EditorialGroup(models.Model):
 
 class Membership(models.Model):
     class Role(models.TextChoices):
-        COORDINATOR = "coordinator", "Coordenador"
-        COLUMNIST = "columnist", "Facilitador"
+        COORDINATOR = "coordinator", "Coordenador(a)"
+        COLUMNIST = "columnist", "Facilitador(a)"
 
     group = models.ForeignKey(EditorialGroup, on_delete=models.CASCADE, related_name="memberships", verbose_name="grupo")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="editorial_memberships", verbose_name="usuário")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="editorial_memberships", verbose_name="usuário(a)")
     role = models.CharField("função", max_length=20, choices=Role.choices)
     is_public = models.BooleanField("exibir no grupo", default=False)
     biography = models.TextField("apresentação", max_length=2000, blank=True)

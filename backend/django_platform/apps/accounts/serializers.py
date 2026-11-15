@@ -45,7 +45,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     def validate_phone(self, value):
         if not can_publish_phone(self.instance.user):
-            raise PermissionDenied("Somente o desenvolvedor e os coordenadores podem publicar telefone de contato.")
+            raise PermissionDenied("Somente o(a) desenvolvedor(a) e os coordenadores podem publicar telefone de contato.")
         if value and (not re.fullmatch(r"\+?[0-9() .-]+", value) or not 8 <= len(re.sub(r"\D", "", value)) <= 15):
             raise serializers.ValidationError("Informe um telefone válido, com DDD e, se necessário, código do país.")
         return value
@@ -111,6 +111,7 @@ class PasswordChangeSerializer(serializers.Serializer):
 
 
 def account_data(user):
+    from apps.core.notifications import can_handle_inbox
     from apps.editorial.models import Membership
     from apps.editorial.policies import can_create_groups, managed_groups
     from apps.billing.access import account_subscription
@@ -147,6 +148,7 @@ def account_data(user):
         "can_delegate_communications": can_delegate(user),
         "communication_sections": [kind for kind in ["events", "notices", "campaigns"] if can_manage(user, kind)],
         "can_order_members": is_developer(user),
+        "can_handle_inbox": can_handle_inbox(user),
         "editorial_groups": list(Membership.objects.filter(user=user, group__is_active=True).values("group__name", "group__slug", "role")),
     }
 

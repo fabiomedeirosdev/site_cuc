@@ -2,6 +2,25 @@ from django.conf import settings
 from django.db import models
 
 
+class InboxMailbox(models.Model):
+    key = models.CharField(max_length=64, unique=True)
+    uid_validity = models.CharField(max_length=40, blank=True)
+    last_uid = models.PositiveBigIntegerField(default=0)
+
+
+class IncomingMessage(models.Model):
+    source_key = models.CharField(max_length=140, unique=True)
+    sender = models.EmailField(blank=True)
+    subject = models.CharField(max_length=300)
+    body = models.TextField(max_length=30000, blank=True)
+    received_at = models.DateTimeField(auto_now_add=True)
+    responded_at = models.DateTimeField(null=True, blank=True)
+    responded_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ["-received_at", "-pk"]
+
+
 DEFAULT_FOUNDERS_STORY = "Eneida Carmona e Luiz Carmona são psicólogos e fundadores da Comunidade Unidos em Cristo. A missão nasceu de encontros de oração entre casais amigos, com o desejo de partilhar a Palavra de Deus e viver a fé de forma concreta. Com o tempo, passou a oferecer formações, palestras e projetos de restauração do ser."
 
 

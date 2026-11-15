@@ -58,5 +58,5 @@ export function ManageFoundersPage() {
       <section><label>História dos fundadores<textarea required maxLength={50000} rows={20} value={form.body} onChange={(event) => field("body", event.target.value)} /></label><p className="management-hint">Conte a história dos fundadores e sua caminhada com a comunidade. Separe os parágrafos com uma linha em branco.</p></section></div>
       <button className="mag-button red" disabled={busy}>{busy ? "Salvando…" : "Salvar e publicar"}</button>
     </fieldset><p className="form-feedback" role={error ? "alert" : "status"}>{feedback}</p>
-  </form>}</> : <p className="editorial-notice" role="alert">Somente o desenvolvedor pode editar a página dos fundadores.</p>}</ManagementLayout>;
+  </form>}</> : <p className="editorial-notice" role="alert">Somente o(a) desenvolvedor(a) pode editar a página dos fundadores.</p>}</ManagementLayout>;
 }

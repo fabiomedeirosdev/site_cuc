@@ -92,7 +92,7 @@ class PublicProfileTests(TestCase):
         self.assertEqual(len(set(Profile.objects.values_list("public_id", flat=True))), Profile.objects.count())
 
     def test_role_labels_are_derived_and_cannot_be_edited(self):
-        for user, code, label in [(self.developer, "developer", "Desenvolvedor"), (self.coordinator, "coordinator", "Coordenador"), (self.auxiliary, "auxiliary", "Auxiliar"), (self.reader, "subscriber", "Assinante")]:
+        for user, code, label in [(self.developer, "developer", "Desenvolvedor(a)"), (self.coordinator, "coordinator", "Coordenador(a)"), (self.auxiliary, "auxiliary", "Auxiliar"), (self.reader, "subscriber", "Assinante")]:
             self.assertEqual(self.public(user).json()["role_label"], label)
             filtered = self.client.get("/api/profiles?role=" + code).json()
             self.assertEqual(filtered["count"], 1)

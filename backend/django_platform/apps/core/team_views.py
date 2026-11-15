@@ -52,9 +52,9 @@ class TeamView(AdminView):
         form.is_valid(raise_exception=True)
         values = form.validated_data
         if "position" in values and not is_developer(request.user):
-            raise PermissionDenied("Somente o Desenvolvedor pode alterar a ordem dos membros.")
+            raise PermissionDenied("Somente o(a) Desenvolvedor(a) pode alterar a ordem dos membros.")
         if values.get("role") == "developer" and not is_developer(request.user):
-            raise PermissionDenied("Somente o Desenvolvedor pode atribuir essa função.")
+            raise PermissionDenied("Somente o(a) Desenvolvedor(a) pode atribuir essa função.")
         return values
 
     @transaction.atomic
@@ -88,7 +88,7 @@ class TeamView(AdminView):
     def assign(self, request, user, values):
         profile = user.profile
         if (user.is_superuser or profile.community_role == "developer") and not is_developer(request.user):
-            raise PermissionDenied("Esta conta é administrada pelo Desenvolvedor.")
+            raise PermissionDenied("Esta conta é administrada pelo(a) Desenvolvedor(a).")
         group = values.get("group")
         role = values.get("role")
         if group and not role:

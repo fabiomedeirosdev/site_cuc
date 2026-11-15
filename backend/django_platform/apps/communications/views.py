@@ -67,7 +67,7 @@ class DelegationView(ManagementView):
             raise PermissionDenied("Somente desenvolvedores e fundadores podem administrar delegações.")
         allowed = {"facilitator", "can_edit_agenda", "can_edit_mural"}
         if not isinstance(request.data, dict) or set(request.data) != allowed:
-            raise ValidationError({"detail": "Informe o facilitador e as duas permissões independentes."})
+            raise ValidationError({"detail": "Informe o(a) facilitador(a) e as duas permissões independentes."})
         identifier = serializers.IntegerField(min_value=1).run_validation(request.data["facilitator"])
         person = get_object_or_404(facilitator_users(), pk=identifier)
         flags = {key: serializers.BooleanField().run_validation(request.data[key]) for key in allowed - {"facilitator"}}

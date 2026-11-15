@@ -91,10 +91,18 @@ EMAIL_PORT = int(os.getenv("SMTP_PORT", "587"))
 EMAIL_HOST_USER = os.getenv("SMTP_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 EMAIL_USE_TLS = os.getenv("SMTP_USE_TLS", "1") == "1"
+EMAIL_USE_SSL = os.getenv("SMTP_USE_SSL", "0") == "1"
 EMAIL_TIMEOUT = 10
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "nao-responder@example.invalid")
 BILLING_ENABLED = os.getenv("BILLING_ENABLED", "0") == "1"
 NEWSLETTER_ENABLED = os.getenv("NEWSLETTER_ENABLED", "0") == "1"
+INBOX_ENABLED = os.getenv("INBOX_ENABLED", "0") == "1"
+INBOX_IMAP_HOST = os.getenv("INBOX_IMAP_HOST", "")
+INBOX_IMAP_PORT = int(os.getenv("INBOX_IMAP_PORT", "993"))
+INBOX_IMAP_USER = os.getenv("INBOX_IMAP_USER", "contato@rhemacuc.com.br")
+INBOX_IMAP_PASSWORD = os.getenv("INBOX_IMAP_PASSWORD", "")
+INBOX_IMAP_FOLDER = os.getenv("INBOX_IMAP_FOLDER", "INBOX")
+INBOX_WEBMAIL_URL = os.getenv("INBOX_WEBMAIL_URL", "")
 PAGBANK_ENVIRONMENT = os.getenv("PAGBANK_ENVIRONMENT", "sandbox")
 if PAGBANK_ENVIRONMENT not in {"sandbox", "production"}:
     raise RuntimeError("PAGBANK_ENVIRONMENT deve ser sandbox ou production.")

@@ -1,0 +1,68 @@
+.profile-editor-page { min-height: 100vh; }
+.profile-editor-main { width: min(1120px, 93%); margin: 0 auto; padding-block: 24px 40px; }
+.profile-editor-page .profile-back-home { display: inline-flex; margin-bottom: 22px; font-size: 13px; }
+.profile-editor-heading { padding-bottom: 16px; border-bottom: 1px solid #e6d4b9; }
+.profile-editor-heading .mag-kicker { font-size: 11px; letter-spacing: .12em; }
+.profile-editor-heading h1 { margin: 4px 0 8px; color: #760b08; font: 700 clamp(32px, 4vw, 46px)/1.1 Georgia, serif; }
+.profile-editor-heading p { font-size: 14px; line-height: 1.5; color: #32251d; }
+.profile-editor-page .profile-edit-heading { margin: 12px 0 20px; }
+.profile-editor-page .profile-edit-heading > .mag-text-link { font-size: 12px; }
+.profile-editor-page .profile-edit-heading > .mag-button { padding: 8px 18px; font-size: 12px; }
+.profile-editor-page .profile-edit-layout { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; }
+.profile-editor-page .profile-surface { padding: 24px; border-radius: 14px; background: linear-gradient(145deg, #fffdf8, #fcf6eb); box-shadow: 0 5px 12px #411e0c08; }
+.profile-editor-page .account-icon { display: block; flex-shrink: 0; width: 24px; height: 24px; color: #a50909; }
+.profile-editor-page .mag-button .account-icon { width: 19px; height: 19px; color: currentColor; }
+.profile-editor-page .profile-section-heading { display: flex; gap: 16px; align-items: flex-start; padding-bottom: 18px; border-bottom: 1px solid #e6d4b9; }
+.profile-editor-page .profile-section-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 10px; background: #faecd6; }
+.profile-editor-page .profile-section-icon .account-icon { width: 30px; height: 30px; }
+.profile-editor-page .profile-surface h2 { margin: 2px 0 6px; color: #760b08; font: 800 21px/1.2 Inter, Arial, sans-serif; }
+.profile-editor-page .profile-section-heading p { margin: 0; color: #786352; font-size: 12px; line-height: 1.5; }
+.profile-editor-page .profile-identity { flex-direction: row; align-items: center; gap: 28px; margin: 16px 0 20px; }
+.profile-photo-preview { position: relative; display: inline-flex; flex-shrink: 0; }
+.profile-editor-page .profile-avatar-large { width: 100px; height: 100px; object-fit: cover; }
+.profile-photo-edit { position: absolute; bottom: 2px; right: 0; display: grid; place-items: center; width: 30px; height: 30px; padding: 5px; border: 2px solid #fffdf8; border-radius: 50%; background: #a50909; cursor: pointer; }
+.profile-editor-page .profile-photo-edit .account-icon { width: 17px; height: 17px; color: white; }
+.profile-editor-page .profile-form, .profile-editor-page .profile-form > fieldset { gap: 14px; }
+.profile-editor-page .profile-presentation .profile-form label { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 16px; align-items: start; font-size: 12px; }
+.profile-editor-page .profile-field-label { display: flex; align-items: flex-start; gap: 12px; color: #760b08; font-weight: 700; line-height: 1.3; padding-top: 8px; }
+.profile-editor-page .profile-field-label .account-icon { width: 20px; height: 20px; }
+.profile-editor-page .profile-form input, .profile-editor-page .profile-form textarea { padding: 9px 11px; border-radius: 7px; font-size: 12px; background: #fffefa; }
+.profile-editor-page .profile-form input[type="file"] { padding: 6px; border: 1px solid #d9c6a7; font-size: 11px; }
+.profile-editor-page .profile-form input[type="file"]::file-selector-button { margin-right: 8px; padding: 3px 7px; border: 1px solid #d9c6a7; border-radius: 4px; background: #f4eee5; color: #32251d; font: inherit; cursor: pointer; }
+.profile-editor-page .profile-form textarea { min-height: 140px; line-height: 1.6; }
+.profile-editor-page .profile-presentation .profile-help, .profile-editor-page .profile-remove-photo { margin-left: 156px; margin-top: -7px; font-size: 10px; line-height: 1.5; }
+.profile-editor-page .profile-remove-photo { font-size: 11px; padding-block: 0 4px; }
+.profile-editor-page .profile-form .mag-button { width: 100%; justify-self: stretch; justify-content: center; border-radius: 12px; padding: 10px 16px; min-height: 40px; font-size: 12px; box-shadow: none; }
+.profile-editor-page .profile-presentation .profile-form .mag-button { margin-top: 10px; }
+.profile-editor-page .profile-private-column { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.profile-editor-page .profile-surface .profile-private-title { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.profile-editor-page .profile-private-title .account-icon { width: 30px; height: 30px; }
+.profile-editor-page .profile-private-email { margin: 0 0 12px; color: #760b08; font-size: 14px; font-weight: 700; }
+.profile-editor-page .profile-private-column .profile-help { margin-bottom: 16px; font-size: 11px; line-height: 1.5; }
+.profile-editor-page .profile-private-column label { font-size: 12px; gap: 6px; color: #32251d; }
+.profile-editor-page .profile-note { display: flex; align-items: flex-start; gap: 10px; padding: 12px; font-size: 11px; line-height: 1.5; }
+.profile-editor-page .profile-note .account-icon { width: 20px; height: 20px; color: #77582c; }
+.profile-password-input { display: flex; position: relative; min-width: 0; }
+.profile-editor-page .profile-password-input input { padding-right: 42px; }
+.profile-password-input button { position: absolute; display: grid; place-items: center; top: 0; right: 0; bottom: 0; width: 40px; padding: 10px; border: 0; background: transparent; cursor: pointer; }
+.profile-editor-page .profile-password-input .account-icon { width: 18px; height: 18px; color: #786352; }
+.profile-editor-page .form-feedback:not(:empty) { font-size: 12px; }
+@media (max-width: 900px) and (min-width: 701px) {
+  .profile-editor-page .profile-surface { padding: 18px; }
+  .profile-editor-page .profile-presentation .profile-form label { grid-template-columns: 110px minmax(0, 1fr); gap: 12px; }
+  .profile-editor-page .profile-presentation .profile-help, .profile-editor-page .profile-remove-photo { margin-left: 122px; }
+}
+@media (max-width: 700px) {
+  .profile-editor-page .profile-edit-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .profile-editor-page .profile-surface { padding: 20px; }
+  .profile-editor-page .profile-private-column { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 420px) {
+  .profile-editor-main { width: 94%; padding-top: 18px; }
+  .profile-editor-page .profile-surface { padding: 16px; }
+  .profile-editor-page .profile-presentation .profile-form label { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .profile-editor-page .profile-presentation .profile-help, .profile-editor-page .profile-remove-photo { margin-left: 0; }
+  .profile-editor-page .profile-field-label { padding-top: 0; }
+  .profile-editor-page .profile-identity { gap: 18px; }
+  .profile-editor-page .profile-surface h2 { font-size: 19px; }
+}

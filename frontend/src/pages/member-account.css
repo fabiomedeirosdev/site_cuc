@@ -1,0 +1,73 @@
+.member-page.member-dashboard { padding: 32px 0; }
+.member-dashboard .member-panel { width: min(1040px, 94%); padding: 28px; border-top-width: 3px; border-radius: 22px; }
+.member-dashboard .member-header { display: flex; align-items: center; gap: 24px; padding: 0 10px 24px; margin-bottom: 24px; border-bottom: 1px solid #e1d5bd; }
+.member-dashboard .eyebrow { color: var(--red-dark); font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.member-dashboard .member-header h1 { font-size: clamp(26px, 3.3vw, 40px); line-height: 1.15; margin: 4px 0 8px; overflow-wrap: anywhere; }
+.member-dashboard .member-header p { font-size: 14px; color: var(--ink); }
+.member-dashboard .account-actions { gap: 12px; margin: 0; }
+.member-dashboard .member-header .account-actions { flex-shrink: 0; }
+.member-dashboard .member-header .btn { width: auto; min-width: 112px; margin: 0; }
+.member-dashboard .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 42px; padding: 10px 16px; border-radius: 9px; box-shadow: none; font-size: 13px; font-weight: 700; line-height: 1.2; text-align: center; }
+.member-dashboard .btn-red { background: linear-gradient(var(--red), var(--red-dark)); border: 1px solid var(--red); color: var(--white); }
+.member-dashboard .login-back { background: transparent; border: 1px solid var(--red); color: var(--red-dark); }
+.member-dashboard .login-back:hover { background: #fbf3e2; }
+.member-dashboard .account-icon { display: block; width: 32px; height: 32px; flex-shrink: 0; color: var(--red); }
+.member-dashboard .btn .account-icon { width: 21px; height: 21px; color: currentColor; }
+.member-dashboard .btn > span[aria-hidden] { font-size: 23px; font-weight: 400; line-height: .7; }
+.member-dashboard .member-overview { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-bottom: 20px; }
+.member-dashboard .member-overview-single { grid-template-columns: minmax(0, 1fr); }
+.member-dashboard .member-overview-card,
+.member-dashboard .member-item,
+.member-dashboard .member-newsletter,
+.member-dashboard .member-community { border: 1px solid #dfcbb4; border-radius: 12px; background: linear-gradient(145deg, var(--paper), #fbf3e2); }
+.member-dashboard .member-overview-card { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; padding: 20px 16px; min-width: 0; }
+.member-dashboard .member-card-heading { display: flex; align-items: flex-start; gap: 16px; min-width: 0; }
+.member-dashboard .member-card-heading > div { min-width: 0; }
+.member-dashboard .member-icon-box { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 56px; height: 56px; border-radius: 10px; background: #faecd6; }
+.member-dashboard h2 { font-family: inherit; color: var(--red-dark); font-size: 20px; font-weight: 800; line-height: 1.2; margin: 2px 0 6px; }
+.member-dashboard .member-overview-card p,
+.member-dashboard .member-item p,
+.member-dashboard .member-newsletter p,
+.member-dashboard .member-community p { color: var(--ink); font-size: 13px; line-height: 1.45; }
+.member-dashboard .member-overview-card > .btn { width: 100%; }
+.member-dashboard .member-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
+.member-dashboard .member-item { display: flex; flex-direction: column; align-items: flex-start; padding: 16px; }
+.member-dashboard .member-item h2 { margin: 8px 0 4px; }
+.member-dashboard .member-item p { flex: 1; margin-bottom: 14px; }
+.member-dashboard .member-item .btn { width: 100%; border-radius: 24px; min-height: 36px; padding: 8px 12px; }
+.member-dashboard .member-newsletter { display: flex; align-items: flex-start; flex-wrap: nowrap; gap: 16px; padding: 20px 16px; margin: 0 0 20px; }
+.member-dashboard .member-newsletter > div { flex: 1; min-width: 0; }
+.member-dashboard .member-newsletter .newsletter-consent { margin-top: 12px; font-size: 12px; color: var(--ink); }
+.member-dashboard .member-newsletter .newsletter-consent input { accent-color: var(--red); }
+.member-dashboard .member-newsletter > .member-newsletter-actions { flex: 0 0 29%; align-self: stretch; display: flex; align-items: center; border-left: 1px solid #dfcbb4; padding-left: 16px; }
+.member-dashboard .member-newsletter-actions .btn { width: 100%; font-size: 12px; padding: 10px; gap: 8px; }
+.member-dashboard .member-newsletter-actions .btn > span:not([aria-hidden]) { text-align: left; }
+.member-dashboard .member-community { padding: 20px 16px; }
+.member-dashboard .member-community .account-actions { margin-top: 18px; display: flex; }
+.member-dashboard .member-community .account-actions > .btn { flex: 1 1 0; }
+.member-dashboard .member-community h2 a { color: inherit; }
+.member-dashboard .member-community h2 a:hover { text-decoration: underline; }
+@media (max-width: 760px) {
+  .member-dashboard .member-panel { padding: 20px; }
+  .member-dashboard .member-header { padding-inline: 0; flex-wrap: wrap; gap: 16px; }
+  .member-dashboard .member-header .btn { width: auto; }
+  .member-dashboard .member-card-heading { gap: 12px; }
+  .member-dashboard .member-icon-box { width: 44px; height: 44px; }
+  .member-dashboard h2 { font-size: 18px; }
+  .member-dashboard .member-newsletter { flex-wrap: wrap; gap: 12px; }
+  .member-dashboard .member-newsletter > div:not(.member-newsletter-actions) { flex-basis: calc(100% - 56px); }
+  .member-dashboard .member-newsletter > .member-newsletter-actions { flex-basis: 100%; padding: 14px 0 0; border-left: 0; border-top: 1px solid #dfcbb4; }
+  .member-dashboard .member-community .account-actions { flex-wrap: wrap; }
+  .member-dashboard .member-community .account-actions > .btn { flex-basis: 180px; }
+}
+@media (max-width: 540px) {
+  .member-page.member-dashboard { padding-block: 16px; }
+  .member-dashboard .member-panel { padding: 18px 14px; }
+  .member-dashboard .member-overview { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .member-dashboard .member-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .member-dashboard .member-item { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; }
+  .member-dashboard .member-item > .account-icon { grid-row: 1 / 3; align-self: start; }
+  .member-dashboard .member-item h2 { margin-top: 0; }
+  .member-dashboard .member-item p { grid-column: 2; }
+  .member-dashboard .member-item .btn { grid-column: 1 / -1; }
+}

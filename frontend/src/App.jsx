@@ -14,9 +14,11 @@ import { GroupsPage, GroupDetailPage, ColumnistsPage, ManageGroupsPage } from ".
 import { ContentCatalogPage, ContentReadPage, MyContentPage, ContentEditorPage } from "./pages/ContentPages.jsx";
 import { SubscribePage, MySubscriptionPage } from "./pages/SubscriptionPages.jsx";
 import { AgendaPage, MuralPage, ManageCommunicationsPage, NewsletterActionPage } from "./pages/CommunicationsPages.jsx";
+import InboxPage from "./pages/InboxPage.jsx";
 import { DashboardPage, HighlightsPage, GroupSettingsPage, NewGroupPage, AdministrationTablePage } from "./pages/ManagementPages.jsx";
 
 const pageTitles = {
+  "/painel/mensagens": "Mensagens recebidas | Comunidade Unidos em Cristo",
   "/fundadores.html": "Fundadores | Comunidade Unidos em Cristo",
   "/painel/fundadores": "Editar fundadores | Comunidade Unidos em Cristo",
   "/painel": "Painel de administração | Comunidade Unidos em Cristo",
@@ -36,7 +38,7 @@ const pageTitles = {
   "/gestao-comunicacao.html": "Comunicação | Comunidade Unidos em Cristo",
   "/newsletter.html": "Newsletter | Comunidade Unidos em Cristo",
   "/recuperar-senha.html": "Recuperar senha | Comunidade Unidos em Cristo",
-  "/area-associado.html": "Área do associado | Comunidade Unidos em Cristo",
+  "/area-associado.html": "Área do(a) associado(a) | Comunidade Unidos em Cristo",
   "/acesso-negado.html": "Acesso restrito | Comunidade Unidos em Cristo",
   "/link-expirado.html": "Link indisponível | Comunidade Unidos em Cristo",
   "/pagamento-sucesso.html": "Confirmação do pagamento | Comunidade Unidos em Cristo",
@@ -112,6 +114,7 @@ export function AppRoutes() {
     <Routes>
       <Route path="/fundadores.html" element={<FoundersPage />} />
       <Route path="/painel/fundadores" element={<RequireAuth><ManageFoundersPage /></RequireAuth>} />
+      <Route path="/painel/mensagens" element={<RequireAuth><InboxPage /></RequireAuth>} />
       <Route path="/painel" element={<RequireAuth><DashboardPage /></RequireAuth>} />
       <Route path="/painel/destaques" element={<RequireAuth><HighlightsPage /></RequireAuth>} />
       <Route path="/painel/grupos" element={<RequireAuth><GroupSettingsPage /></RequireAuth>} />

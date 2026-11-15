@@ -44,6 +44,11 @@ export function createApiClient({ baseUrl = "", fetchImpl = globalThis.fetch } =
   }
 
   return {
+    getNotifications: (options) => request("/api/notifications", options),
+    readNotifications: (seen_until) => write("/api/notifications", "POST", { seen_until }),
+    getInbox: (page = 1, status = "pending", options) => request(`/api/inbox?page=${page}&status=${status}`, options),
+    getIncomingMessage: (id, options) => request(`/api/inbox/${id}`, options),
+    respondToIncomingMessage: (id, responded) => write(`/api/inbox/${id}`, "PATCH", { responded }),
     getTeam: (page = 1, query = "", options) => request(`/api/management/team?page=${page}&q=${encodeURIComponent(query)}`, options),
     addTeamMember: (data) => write("/api/management/team", "POST", data),
     updateTeamMember: (id, data) => write(`/api/management/team/${id}`, "PATCH", data),

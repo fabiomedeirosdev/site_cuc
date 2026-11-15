@@ -28,15 +28,15 @@ def account_roles(user):
 def profile_role(user):
     from apps.editorial.policies import managed_groups
     if is_developer(user):
-        return "developer", "Desenvolvedor"
+        return "developer", "Desenvolvedor(a)"
     if getattr(getattr(user, "profile", None), "community_role", "") == "founder":
-        return "founder", "Fundador"
+        return "founder", "Fundador(a)"
     if managed_groups(user).exists():
-        return "coordinator", "Coordenador"
+        return "coordinator", "Coordenador(a)"
     if user.editorial_memberships.filter(group__is_active=True, role="columnist").exists():
         return "auxiliary", "Auxiliar"
     if getattr(getattr(user, "profile", None), "community_role", "") == "columnist":
-        return "auxiliary", "Facilitador"
+        return "auxiliary", "Facilitador(a)"
     return "subscriber", "Assinante"
 
 
