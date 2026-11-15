@@ -45,7 +45,7 @@ class BillingBrowserTests(LiveServerTestCase):
                     checkout = Checkout.objects.create(plan_id="PLAN_" + str(uuid4()), legal_version=settings.BILLING_LEGAL_VERSION)
                     identifier = "SUBS_" + str(uuid4())
                     now = timezone.now()
-                    snapshots[identifier] = Snapshot(identifier, checkout.plan_id, email, "ACTIVE", now, now - timedelta(days=15), now + timedelta(days=15), 4820, "BRL")
+                    snapshots[identifier] = Snapshot(identifier, checkout.plan_id, email, "ACTIVE", now, now - timedelta(days=15), now + timedelta(days=15), 4800, "BRL")
                     synchronize(identifier)
                     token = re.search(r"#convite=([A-Za-z0-9_-]+)", mail.outbox[-1].body).group(1)
                     fixtures[viewport][role] = {"token": token, "email": email}

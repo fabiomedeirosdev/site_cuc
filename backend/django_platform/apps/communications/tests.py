@@ -51,10 +51,15 @@ class CommunicationsTests(TestCase):
     def campaign(self):
         return Campaign.objects.create(subject="Novidades", introduction="Nossa semana", status="scheduled", scheduled_at=self.now - timedelta(minutes=1), created_by=self.coordinator)
 
-    def test_only_coordinator_can_delegate_to_facilitator_in_own_active_group(self):
+    def test_only_application_admin_can_delegate_to_active_facilitator(self):
         self.login(self.coordinator)
-        self.assertEqual(self.write("put", "/api/communications/delegation", {"facilitator": self.outsider.pk}).status_code, 400)
-        self.assertEqual(self.write("put", "/api/communications/delegation", {"facilitator": self.helper.pk}).status_code, 200)
+        self.assertEqual(self.write("put", "/api/communications/delegation", {"facilitator": self.helper.pk}).status_code, 403)
+        founder = get_user_model().objects.create_user(username="founder-delegate", email="founder-delegate@example.invalid")
+        founder.profile.community_role = "founder"
+        founder.profile.save()
+        self.login(founder)
+        self.assertEqual(self.write("put", "/api/communications/delegation", {"facilitator": self.outsider.pk, "can_edit_agenda": True, "can_edit_mural": False}).status_code, 404)
+        self.assertEqual(self.write("put", "/api/communications/delegation", {"facilitator": self.helper.pk, "can_edit_agenda": True, "can_edit_mural": False}).status_code, 200)
         self.assertTrue(can_manage(self.helper))
         self.login(self.helper)
         self.assertEqual(self.write("put", "/api/communications/delegation", {"facilitator": self.outsider.pk}).status_code, 403)

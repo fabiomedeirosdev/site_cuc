@@ -9,7 +9,7 @@ class Checkout(models.Model):
     provider_id = models.CharField(max_length=80, unique=True, null=True)
     plan_id = models.CharField(max_length=80, unique=True, null=True)
     payment_url = models.URLField(max_length=1000, blank=True)
-    amount = models.PositiveIntegerField(default=4820)
+    amount = models.PositiveIntegerField(default=4800)
     legal_version = models.CharField(max_length=40)
     created_at = models.DateTimeField(auto_now_add=True)
 

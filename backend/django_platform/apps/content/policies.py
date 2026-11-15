@@ -21,5 +21,5 @@ def editable_articles(user):
 
 def published_articles():
     # A retirada da autorização editorial também retira o conteúdo da leitura pública.
-    authorized = Q(author__is_superuser=True) | Q(group__memberships__user_id=F("author_id"), group__memberships__role__in=[Membership.Role.COLUMNIST, Membership.Role.COORDINATOR])
+    authorized = Q(author__is_superuser=True) | Q(author__profile__community_role__in=["founder", "developer"]) | Q(group__memberships__user_id=F("author_id"), group__memberships__role__in=[Membership.Role.COLUMNIST, Membership.Role.COORDINATOR])
     return Article.objects.filter(status=Article.Status.PUBLISHED, group__is_active=True, author__is_active=True).filter(authorized).distinct()

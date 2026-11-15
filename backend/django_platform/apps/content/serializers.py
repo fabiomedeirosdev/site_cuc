@@ -10,6 +10,7 @@ from .video import embed_url, video_id
 
 
 class ArticleSummarySerializer(serializers.ModelSerializer):
+    excerpt = serializers.SerializerMethodField()
     author_name = serializers.SerializerMethodField()
     author_profile_url = serializers.SerializerMethodField()
     group_name = serializers.CharField(source="group.name", read_only=True)
@@ -20,6 +21,9 @@ class ArticleSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ["id", "title", "excerpt", "author_name", "author_profile_url", "group_name", "cover_url", "cover_alt", "published_at", "updated_at", "has_video", "is_locked", "is_featured", "featured_position"]
+
+    def get_excerpt(self, obj):
+        return "" if self.get_is_locked(obj) else obj.excerpt
 
     def get_author_name(self, obj):
         return public_name(obj.author)
@@ -36,7 +40,7 @@ class ArticleSummarySerializer(serializers.ModelSerializer):
     def get_is_locked(self, obj):
         from apps.billing.access import has_access
         request = self.context.get("request")
-        return obj.audience == Article.Audience.MEMBERS and not (request and has_access(request.user))
+        return obj.audience == Article.Audience.MEMBERS and not (request and (has_access(request.user) or is_editorial_admin(request.user)))
 
 
 class ArticleReadSerializer(ArticleSummarySerializer):
@@ -54,6 +58,7 @@ class ArticleReadSerializer(ArticleSummarySerializer):
 
 
 class ArticleEditorSerializer(ArticleSummarySerializer):
+    excerpt = serializers.CharField(read_only=True)
     class Meta(ArticleSummarySerializer.Meta):
         fields = ArticleSummarySerializer.Meta.fields + ["group", "cover", "body", "video_url", "status", "audience"]
 

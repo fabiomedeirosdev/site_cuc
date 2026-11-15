@@ -44,13 +44,17 @@ export function createApiClient({ baseUrl = "", fetchImpl = globalThis.fetch } =
   }
 
   return {
+    getTeam: (page = 1, query = "", options) => request(`/api/management/team?page=${page}&q=${encodeURIComponent(query)}`, options),
+    addTeamMember: (data) => write("/api/management/team", "POST", data),
+    updateTeamMember: (id, data) => write(`/api/management/team/${id}`, "PATCH", data),
+    getGroupArticles: (slug, page = 1, options) => request(`/api/articles?group=${encodeURIComponent(slug)}&page=${page}`, options),
     getEvents: (page = 1, past = false, options) => request(`/api/events?page=${page}&past=${past ? 1 : 0}`, options),
     getMural: (page = 1, options) => request(`/api/mural?page=${page}`, options),
     getCommunications: (kind, page = 1, options) => request(`/api/communications/${kind}?page=${page}`, options),
     saveCommunication: (kind, id, data) => write(`/api/communications/${kind}${id ? `/${id}` : ""}`, id ? "PATCH" : "POST", data),
     deleteCommunication: (kind, id) => write(`/api/communications/${kind}/${id}`, "DELETE"),
     getCommunicationDelegation: (options) => request("/api/communications/delegation", options),
-    setCommunicationDelegate: (facilitator) => write("/api/communications/delegation", "PUT", { facilitator }),
+    setCommunicationDelegate: (data) => write("/api/communications/delegation", "PUT", data),
     getWeeklyNewsletter: (options) => request("/api/communications/weekly", options),
     saveWeeklyNewsletter: (data) => write("/api/communications/weekly", "PUT", data),
     previewNewsletter: (data) => write("/api/communications/preview", "POST", data),

@@ -45,7 +45,7 @@ const pageTitles = {
   "/politica-privacidade.html": "Política de privacidade | Comunidade Unidos em Cristo",
   "/termos.html": "Termos de uso | Comunidade Unidos em Cristo",
   "/perfil.html": "Meu perfil | Comunidade Unidos em Cristo",
-  "/perfis.html": "Pessoas da comunidade | Comunidade Unidos em Cristo",
+  "/perfis.html": "Membros da Comunidade | Comunidade Unidos em Cristo",
   "/confirmar-email.html": "Confirmar e-mail | Comunidade Unidos em Cristo",
   "/grupos.html": "Nossos Grupos | Comunidade Unidos em Cristo",
   "/facilitadores.html": "Facilitadores | Comunidade Unidos em Cristo",

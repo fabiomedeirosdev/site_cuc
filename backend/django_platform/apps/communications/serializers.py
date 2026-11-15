@@ -46,7 +46,7 @@ class PublicEventSerializer(EventSerializer):
             return False
         user = self.context["request"].user
         if "_event_members_access" not in self.context:
-            self.context["_event_members_access"] = has_access(user) or can_manage(user)
+            self.context["_event_members_access"] = has_access(user) or can_manage(user, "events")
         return not self.context["_event_members_access"]
 
     def get_description(self, obj):
@@ -113,7 +113,7 @@ class PublicNoticeSerializer(NoticeSerializer):
             return False
         if "_notice_members_access" not in self.context:
             user = self.context["request"].user
-            self.context["_notice_members_access"] = has_access(user) or can_manage(user)
+            self.context["_notice_members_access"] = has_access(user) or can_manage(user, "notices")
         return not self.context["_notice_members_access"]
 
     def get_body(self, obj):

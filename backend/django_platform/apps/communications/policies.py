@@ -11,12 +11,24 @@ def candidates(user):
     return Membership.objects.filter(group__in=managed_groups(user), group__is_active=True, role="columnist", user__is_active=True).exclude(user=user)
 
 
-def can_manage(user):
+def can_delegate(user):
+    return is_editorial_admin(user)
+
+
+def facilitator_users():
+    from django.contrib.auth import get_user_model
+    from django.db.models import Q
+    return get_user_model().objects.filter(is_active=True).filter(Q(profile__community_role="columnist") | Q(editorial_memberships__role="columnist", editorial_memberships__group__is_active=True)).distinct()
+
+
+def can_manage(user, kind=None):
     if not user or not user.is_authenticated or not user.is_active:
         return False
     if can_coordinate(user):
         return True
     for delegation in Delegation.objects.filter(facilitator=user).select_related("coordinator"):
-        if can_coordinate(delegation.coordinator) and candidates(delegation.coordinator).filter(user=user).exists():
+        valid = (is_editorial_admin(delegation.coordinator) and facilitator_users().filter(pk=user.pk).exists()) or (can_coordinate(delegation.coordinator) and candidates(delegation.coordinator).filter(user=user).exists())
+        flags = {"events": delegation.can_edit_agenda, "notices": delegation.can_edit_mural, "campaigns": delegation.can_edit_newsletter}
+        if valid and (flags.get(kind, False) if kind else any(flags.values())):
             return True
     return False

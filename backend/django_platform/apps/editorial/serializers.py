@@ -25,18 +25,24 @@ class PublicMemberSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
+    video_embed_url = serializers.SerializerMethodField()
     team = serializers.SerializerMethodField()
     cover_url = serializers.SerializerMethodField()
 
     class Meta:
         model = EditorialGroup
-        fields = ["id", "name", "slug", "description", "cover", "cover_url", "cover_alt", "team"]
+        fields = ["id", "name", "slug", "description", "cover", "cover_url", "cover_alt", "team", "address", "whatsapp", "video_embed_url"]
 
     def get_cover_url(self, obj):
         return obj.custom_cover.url if obj.custom_cover else None
 
+    def get_video_embed_url(self, obj):
+        from apps.content.video import embed_url
+        return embed_url(obj.video_url)
+
     def get_team(self, obj):
         members = [m for m in obj.memberships.all() if m.is_public and m.user.is_active]
+        members.sort(key=lambda m: (m.user.profile.position, m.user_id, m.pk))
         return PublicMemberSerializer(members, many=True).data
 
 

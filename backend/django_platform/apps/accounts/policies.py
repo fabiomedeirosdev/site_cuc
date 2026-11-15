@@ -9,27 +9,39 @@ CONSUMPTION_PERMISSIONS = {
 }
 
 
+def is_developer(user):
+    return bool(user.is_authenticated and user.is_active and (user.is_superuser or getattr(getattr(user, "profile", None), "community_role", "") == "developer"))
+
+
+def is_application_admin(user):
+    return bool(user.is_authenticated and user.is_active and (is_developer(user) or getattr(getattr(user, "profile", None), "community_role", "") == "founder"))
+
+
 def account_roles(user):
     groups = set(user.groups.values_list("name", flat=True))
     roles = [role for role, group in ROLE_GROUPS.items() if group in groups]
-    if user.is_superuser:
+    if is_application_admin(user):
         roles.insert(0, "administrator")
     return roles
 
 
 def profile_role(user):
     from apps.editorial.policies import managed_groups
-    if user.is_superuser:
+    if is_developer(user):
         return "developer", "Desenvolvedor"
+    if getattr(getattr(user, "profile", None), "community_role", "") == "founder":
+        return "founder", "Fundador"
     if managed_groups(user).exists():
         return "coordinator", "Coordenador"
     if user.editorial_memberships.filter(group__is_active=True, role="columnist").exists():
         return "auxiliary", "Auxiliar"
+    if getattr(getattr(user, "profile", None), "community_role", "") == "columnist":
+        return "auxiliary", "Facilitador"
     return "subscriber", "Assinante"
 
 
 def can_publish_phone(user):
-    return bool(user.is_authenticated and user.is_active and profile_role(user)[0] in {"developer", "coordinator"})
+    return bool(user.is_authenticated and user.is_active and profile_role(user)[0] in {"developer", "founder", "coordinator"})
 
 
 def consumption_capabilities(user):

@@ -38,7 +38,22 @@ class PublicColumnistsView(ListAPIView):
     permission_classes = [AllowAny]
     authentication_classes = []
     serializer_class = ColumnistSerializer
-    queryset = Membership.objects.filter(role=Membership.Role.COLUMNIST, is_public=True, group__is_active=True, user__is_active=True).select_related("group", "user__profile")
+    queryset = Membership.objects.filter(role=Membership.Role.COLUMNIST, is_public=True, group__is_active=True, user__is_active=True).select_related("group", "user__profile").order_by("user__profile__position", "user_id", "pk")
+
+    def list(self, request, *args, **kwargs):
+        from apps.accounts.models import Profile
+        from apps.accounts.images import avatar_url
+        rows = [(member.user.profile.position, member.user_id, member.pk, ColumnistSerializer(member).data) for member in self.get_queryset()]
+        general = Profile.objects.filter(community_role="columnist", user__is_active=True).exclude(user__editorial_memberships__group__is_active=True).select_related("user")
+        from .policies import public_name
+        for profile in general:
+            rows.append((profile.position, profile.user_id, 0, {
+                "display_name": public_name(profile.user), "role": "columnist", "biography": profile.biography,
+                "avatar_url": avatar_url(profile), "profile_url": f"/perfis/{profile.public_id}",
+                "group_name": "", "group_slug": "",
+            }))
+        ordered = [row[3] for row in sorted(rows, key=lambda row: row[:3])]
+        return self.get_paginated_response(self.paginate_queryset(ordered))
 
 
 class ManagedGroupsView(AccountAPIView):

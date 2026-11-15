@@ -17,7 +17,7 @@ class PublicProfilesView(AccountAPIView):
     authentication_classes = []
 
     def get(self, request, public_id=None):
-        profiles = Profile.objects.filter(user__is_active=True).select_related("user").order_by("-updated_at", "pk")
+        profiles = Profile.objects.filter(user__is_active=True).select_related("user").order_by("position", "pk")
         if public_id is not None:
             return Response(PublicProfileSerializer(get_object_or_404(profiles, public_id=public_id)).data)
         query = request.query_params.get("q", "").strip()[:150]
@@ -26,14 +26,16 @@ class PublicProfilesView(AccountAPIView):
         role = request.query_params.get("role", "")
         coordinators = Membership.objects.filter(group__is_active=True, role="coordinator").values("user_id")
         auxiliaries = Membership.objects.filter(group__is_active=True, role="columnist").values("user_id")
-        if role == "developer":
-            profiles = profiles.filter(user__is_superuser=True)
+        if role == "founder":
+            profiles = profiles.filter(community_role="founder", user__is_superuser=False)
+        elif role == "developer":
+            profiles = profiles.filter(Q(user__is_superuser=True) | Q(community_role="developer"))
         elif role == "coordinator":
-            profiles = profiles.filter(user_id__in=coordinators, user__is_superuser=False)
+            profiles = profiles.filter(user_id__in=coordinators, user__is_superuser=False).exclude(community_role__in=["founder", "developer"])
         elif role == "auxiliary":
-            profiles = profiles.filter(user_id__in=auxiliaries, user__is_superuser=False).exclude(user_id__in=coordinators)
+            profiles = profiles.filter(Q(user_id__in=auxiliaries) | Q(community_role="columnist"), user__is_superuser=False).exclude(user_id__in=coordinators).exclude(community_role__in=["founder", "developer"])
         elif role == "subscriber":
-            profiles = profiles.filter(user__is_superuser=False).exclude(user_id__in=coordinators).exclude(user_id__in=auxiliaries)
+            profiles = profiles.filter(user__is_superuser=False, community_role="").exclude(user_id__in=coordinators).exclude(user_id__in=auxiliaries)
         elif role:
             raise ValidationError({"role": "Escolha uma função válida."})
         paginator = PageNumberPagination()

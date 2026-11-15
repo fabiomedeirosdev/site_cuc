@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from apps.accounts.views import AccountAPIView
 from apps.editorial.policies import public_name
 from .models import Campaign, Delegation, Delivery, Event, NewsletterPreference, NewsletterSettings, Notice
-from .policies import can_coordinate, can_manage, candidates
+from .policies import can_coordinate, can_manage, candidates, can_delegate, facilitator_users
 from .serializers import CampaignSerializer, EventSerializer, PublicEventSerializer, PublicNoticeSerializer, NewsletterSettingsSerializer, NoticeSerializer
 from .services import email_available, preference_for_user, render_campaign, request_confirmation
 
@@ -55,25 +55,28 @@ class ManagementView(AccountAPIView):
 
 class DelegationView(ManagementView):
     def get(self, request):
-        if not can_coordinate(request.user):
-            return Response({"can_delegate": False, "candidates": []})
-        delegation = Delegation.objects.filter(coordinator=request.user).first()
-        people = {row.user_id: {"id": row.user_id, "name": public_name(row.user)} for row in candidates(request.user).select_related("user__profile")}
-        return Response({"can_delegate": True, "selected": delegation.facilitator_id if delegation and delegation.facilitator_id in people else None, "candidates": list(people.values())})
+        if not can_delegate(request.user):
+            return Response({"can_delegate": False, "candidates": [], "delegations": []})
+        people = [{"id": u.pk, "name": public_name(u)} for u in facilitator_users().select_related("profile")]
+        rows = list(Delegation.objects.filter(coordinator__is_active=True).values("facilitator_id", "coordinator_id", "can_edit_agenda", "can_edit_mural", "can_edit_newsletter"))
+        return Response({"can_delegate": True, "candidates": people, "delegations": rows})
 
+    @transaction.atomic
     def put(self, request):
-        if not can_coordinate(request.user):
-            raise PermissionDenied("Somente a coordenação pode escolher o responsável auxiliar.")
-        if not isinstance(request.data, dict) or set(request.data) != {"facilitator"}:
-            raise ValidationError({"detail": "Informe o facilitador ou null para remover a delegação."})
-        identifier = request.data["facilitator"]
-        if identifier is None:
-            Delegation.objects.filter(coordinator=request.user).delete()
-        else:
-            identifier = serializers.IntegerField(min_value=1).run_validation(identifier)
-            if not candidates(request.user).filter(user_id=identifier).exists():
-                raise ValidationError({"facilitator": "Escolha um facilitador ativo de um grupo que você coordena."})
-            Delegation.objects.update_or_create(coordinator=request.user, defaults={"facilitator_id": identifier})
+        if not can_delegate(request.user):
+            raise PermissionDenied("Somente desenvolvedores e fundadores podem administrar delegações.")
+        allowed = {"facilitator", "can_edit_agenda", "can_edit_mural"}
+        if not isinstance(request.data, dict) or set(request.data) != allowed:
+            raise ValidationError({"detail": "Informe o facilitador e as duas permissões independentes."})
+        identifier = serializers.IntegerField(min_value=1).run_validation(request.data["facilitator"])
+        person = get_object_or_404(facilitator_users(), pk=identifier)
+        flags = {key: serializers.BooleanField().run_validation(request.data[key]) for key in allowed - {"facilitator"}}
+        # Administradores podem revogar também autorizações antigas, sem apagar registros.
+        Delegation.objects.filter(facilitator=person).update(**flags)
+        delegation, _ = Delegation.objects.get_or_create(coordinator=request.user, facilitator=person, defaults={**flags, "can_edit_newsletter": False})
+        for name, value in flags.items():
+            setattr(delegation, name, value)
+        delegation.save(update_fields=[*flags, "updated_at"])
         return self.get(request)
 
 
@@ -81,6 +84,8 @@ class ContentManagementView(ManagementView):
     models = {"events": (Event, EventSerializer), "notices": (Notice, NoticeSerializer), "campaigns": (Campaign, CampaignSerializer)}
 
     def pair(self, kind):
+        if not can_manage(self.request.user, kind):
+            raise PermissionDenied("Você não tem autorização para editar esta seção.")
         if kind not in self.models:
             from django.http import Http404
             raise Http404
@@ -129,6 +134,8 @@ class ContentManagementView(ManagementView):
 
 class PreviewView(ManagementView):
     def post(self, request):
+        if not can_manage(request.user, "campaigns"):
+            raise PermissionDenied()
         data = request.data.copy()
         identifier = data.get("campaign_id")
         data.pop("campaign_id", None)
@@ -157,7 +164,7 @@ class CommunicationImageView(AccountAPIView):
             raise Http404
         item = get_object_or_404(models[kind], pk=pk)
         published = item.is_published if kind == "notices" else item.status == "sent" if kind == "campaigns" else False
-        if not can_manage(request.user) and (not published or item.is_members_only and not has_access(request.user)):
+        if not can_manage(request.user, "notices" if kind == "notices" else "campaigns") and (not published or item.is_members_only and not has_access(request.user)):
             raise Http404
         if not item.image:
             raise Http404
@@ -170,6 +177,11 @@ class CommunicationImageView(AccountAPIView):
 
 
 class WeeklySettingsView(ManagementView):
+    def initial(self, request, *args, **kwargs):
+        super().initial(request, *args, **kwargs)
+        if not can_manage(request.user, "campaigns"):
+            raise PermissionDenied()
+
     def get(self, request):
         config, _ = NewsletterSettings.objects.get_or_create(pk=1)
         return Response({**NewsletterSettingsSerializer(config).data, "delivery_available": email_available()})

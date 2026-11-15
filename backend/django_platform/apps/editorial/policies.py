@@ -2,7 +2,8 @@ from .models import EditorialGroup, Membership
 
 
 def is_editorial_admin(user):
-    return bool(user.is_authenticated and user.is_active and user.is_superuser)
+    from apps.accounts.policies import is_application_admin
+    return is_application_admin(user)
 
 
 def managed_groups(user):

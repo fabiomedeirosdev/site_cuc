@@ -11,7 +11,11 @@ class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     extra = 0
-    fields = ["display_name"]
+    fields = ["display_name", "community_role", "position"]
+
+    def get_readonly_fields(self, request, obj=None):
+        from .policies import is_developer
+        return [] if is_developer(request.user) else ["community_role", "position"]
 
 
 class AccountAdmin(UserAdmin):

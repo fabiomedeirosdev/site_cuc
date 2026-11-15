@@ -18,9 +18,9 @@ def with_relations(queryset):
     return queryset.select_related("author__profile", "group", "cover")
 
 
+@method_decorator(never_cache, name="dispatch")
 class PublicArticlesView(ListAPIView):
     permission_classes = [AllowAny]
-    authentication_classes = []
     serializer_class = ArticleSummarySerializer
 
     def get_queryset(self):

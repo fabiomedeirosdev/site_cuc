@@ -3,9 +3,12 @@ from django.urls import path
 from apps.core.views import health, readiness
 from .management_views import DashboardView, HighlightView, UsersView, UserAccessView, SubscriptionsView, RequestsView, GroupSettingsView
 from .founders_views import ManageFoundersView, PublicFoundersView
+from .team_views import TeamView
 
 
 urlpatterns = [
+    path("management/team", TeamView.as_view()),
+    path("management/team/<int:pk>", TeamView.as_view()),
     path("founders", PublicFoundersView.as_view()),
     path("management/founders", ManageFoundersView.as_view()),
     path("management/dashboard", DashboardView.as_view()),

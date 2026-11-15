@@ -35,7 +35,7 @@ class BillingTests(TestCase):
         mail.outbox = []
         self.client = APIClient(enforce_csrf_checks=True)
         self.now = timezone.now()
-        self.snapshot = Snapshot(self.identifier, self.checkout.plan_id, "paid@example.invalid", "ACTIVE", self.now, self.now - timedelta(days=15), self.now + timedelta(days=15), 4820, "BRL")
+        self.snapshot = Snapshot(self.identifier, self.checkout.plan_id, "paid@example.invalid", "ACTIVE", self.now, self.now - timedelta(days=15), self.now + timedelta(days=15), 4800, "BRL")
 
     def sync(self, snapshot=None, send=False):
         with patch.object(PagBank, "subscription", return_value=snapshot or self.snapshot), self.captureOnCommitCallbacks(execute=send):
@@ -283,7 +283,7 @@ class BillingTests(TestCase):
             result = PagBank().create_checkout(self.checkout)
         self.assertEqual(result["plan_id"], self.checkout.plan_id)
         body = request.call_args.args[4]
-        self.assertEqual(body["items"][0]["unit_amount"], 4820)
+        self.assertEqual(body["items"][0]["unit_amount"], 4800)
         self.assertEqual(body["recurrence_plan"]["interval"], {"unit": "MONTH", "length": 1})
         self.assertNotIn("billing_cycles", body["recurrence_plan"])
         self.assertEqual(request.call_args.kwargs["key"], self.checkout.pk)

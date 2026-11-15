@@ -5,9 +5,15 @@ from .images import communication_image_storage
 
 
 class Delegation(models.Model):
-    coordinator = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="communications_delegation")
+    coordinator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="communications_delegation")
     facilitator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="communications_delegations")
+    can_edit_agenda = models.BooleanField(default=True)
+    can_edit_mural = models.BooleanField(default=True)
+    can_edit_newsletter = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["coordinator", "facilitator"], name="communications_unique_delegate")]
 
 
 class Event(models.Model):

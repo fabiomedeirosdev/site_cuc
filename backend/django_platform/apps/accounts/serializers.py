@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 import re
 
 from .models import Profile
-from .policies import account_roles, can_publish_phone, consumption_capabilities, profile_role
+from .policies import account_roles, can_publish_phone, consumption_capabilities, profile_role, is_developer
 from .images import avatar_url, clean_avatar
 from apps.content.video import video_id, embed_url
 
@@ -114,7 +114,7 @@ def account_data(user):
     from apps.editorial.models import Membership
     from apps.editorial.policies import can_create_groups, managed_groups
     from apps.billing.access import account_subscription
-    from apps.communications.policies import can_manage, can_coordinate
+    from apps.communications.policies import can_manage, can_delegate
 
     profile, _ = Profile.objects.get_or_create(user=user)
     subscription = account_subscription(user)
@@ -144,7 +144,9 @@ def account_data(user):
         "can_create_groups": can_create_groups(user),
         "can_access_panel": bool(user.is_active and (user.is_superuser or user.editorial_memberships.filter(group__is_active=True).exists() or can_manage(user))),
         "can_manage_communications": can_manage(user),
-        "can_delegate_communications": can_coordinate(user),
+        "can_delegate_communications": can_delegate(user),
+        "communication_sections": [kind for kind in ["events", "notices", "campaigns"] if can_manage(user, kind)],
+        "can_order_members": is_developer(user),
         "editorial_groups": list(Membership.objects.filter(user=user, group__is_active=True).values("group__name", "group__slug", "role")),
     }
 

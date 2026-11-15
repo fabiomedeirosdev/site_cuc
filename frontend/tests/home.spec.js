@@ -8,14 +8,26 @@ test.beforeEach(async ({ context }) => {
   await context.route("**/api/articles?featured=1&*", (route) => route.fulfill({ json: { count: 0, next: null, previous: null, results: [] } }));
   await context.route("**/api/events?*", (route) => route.fulfill({ json: { count: 0, next: null, previous: null, results: [] } }));
   await context.route("**/api/mural?*", (route) => route.fulfill({ json: { count: 0, next: null, previous: null, results: [] } }));
+  await context.route("**/api/groups?*", (route) => route.fulfill({ json: { count: 0, next: null, previous: null, results: [] } }));
+  await context.route("**/api/facilitators?*", (route) => route.fulfill({ json: { count: 0, next: null, previous: null, results: [] } }));
   await context.route("**/api/auth/csrf", (route) => route.fulfill({ json: { csrf_token: "test-only" } }));
   await context.route("**/api/newsletter/request", (route) => route.fulfill({ status: 503, json: { detail: "A newsletter está em configuração. Nenhum e-mail foi enviado." } }));
 });
 
-test("home: carousel, search, content dialog and newsletter", async ({ page }) => {
+test("home: carousel, search, content dialog and newsletter", async ({ page }, testInfo) => {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
+  await expect(page.locator(".mag-hero-copy > p")).toHaveText("Reflexões, colunas semanais, vídeos e conteúdos exclusivos para fortalecer a sua caminhada com Cristo.");
+  await expect(page.locator(".mag-price strong")).toHaveText("R$ 48,00");
+  const contributionBanner = page.getByRole("region", { name: "Quero ajudar com um valor maior" });
+  const contribution = contributionBanner.getByRole("link", { name: "Clique aqui" });
+  await expect(contribution).toBeVisible();
+  const whatsapp = new URL(await contribution.getAttribute("href"));
+  expect(whatsapp.pathname).toBe("/5511986302883");
+  expect(whatsapp.searchParams.get("text")).toBe("Olá, quero ajudar com um valor maior a comunidade.");
+  await contributionBanner.screenshot({ path: testInfo.outputPath("contribution-banner.png") });
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", /logos_maria_pomba/);
   if (page.viewportSize().width <= 980) await page.getByRole("button", { name: "Abrir menu", exact: true }).click();
   const navigation = page.getByRole("navigation", { name: "Navegação principal" });
   await expect(navigation.getByRole("link", { name: "CUC Online", exact: true })).toBeVisible();

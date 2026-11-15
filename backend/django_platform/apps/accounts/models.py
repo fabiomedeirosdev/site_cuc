@@ -6,6 +6,8 @@ from .images import profile_image_storage
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
+    community_role = models.CharField("função geral", max_length=20, blank=True, choices=[("founder", "Fundador"), ("developer", "Desenvolvedor"), ("columnist", "Facilitador")])
+    position = models.PositiveSmallIntegerField("ordem de exibição", default=0)
     display_name = models.CharField("nome de exibição", max_length=150, blank=True)
     public_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     avatar = models.ImageField("foto de perfil", storage=profile_image_storage, upload_to="avatars/%Y/%m/", blank=True)

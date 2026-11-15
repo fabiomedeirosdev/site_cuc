@@ -123,8 +123,8 @@ class UsersView(AdminView):
         if query:
             users = users.filter(Q(email__icontains=query) | Q(profile__display_name__icontains=query))
         return paginate(request, users, lambda user: {"id": user.pk, "name": public_name(user), "email": user.email,
-            "is_active": user.is_active, "is_administrator": user.is_superuser,
-            "access_protected": user.is_staff or user.is_superuser or user.pk == request.user.pk, "joined_at": user.date_joined})
+            "is_active": user.is_active, "is_administrator": is_editorial_admin(user),
+            "access_protected": user.is_staff or is_editorial_admin(user) or user.pk == request.user.pk, "joined_at": user.date_joined})
 
 
 class UserAccessInput(serializers.Serializer):
@@ -134,7 +134,7 @@ class UserAccessInput(serializers.Serializer):
 class UserAccessView(AdminView):
     def patch(self, request, pk):
         user = get_object_or_404(get_user_model(), pk=pk)
-        if user.pk == request.user.pk or user.is_superuser or user.is_staff:
+        if user.pk == request.user.pk or is_editorial_admin(user) or user.is_staff:
             raise PermissionDenied("Contas administrativas são protegidas contra alteração de acesso neste painel.")
         if set(request.data) != {"is_active"}:
             raise serializers.ValidationError("Informe apenas a situação de acesso.")
@@ -181,11 +181,22 @@ class GroupInput(serializers.ModelSerializer):
 
     class Meta:
         model = EditorialGroup
-        fields = ["id", "name", "slug", "description", "cover", "custom_cover", "remove_custom_cover", "cover_url", "cover_alt", "is_active", "position"]
+        fields = ["id", "name", "slug", "description", "cover", "custom_cover", "remove_custom_cover", "cover_url", "cover_alt", "is_active", "position", "address", "whatsapp", "video_url"]
         read_only_fields = ["id", "slug", "cover_url"]
 
     def get_cover_url(self, obj):
         return obj.custom_cover.url if obj.custom_cover else None
+
+    def validate_whatsapp(self, value):
+        import re
+        if value and not re.fullmatch(r"[0-9]{10,15}", value):
+            raise serializers.ValidationError("Informe somente números, com código do país e DDD.")
+        return value
+
+    def validate_video_url(self, value):
+        from apps.content.video import video_id
+        identifier = video_id(value)
+        return f"https://www.youtube.com/watch?v={identifier}" if identifier else ""
 
     def validate_custom_cover(self, upload):
         return clean_group_cover(upload)
