@@ -14,8 +14,8 @@ class ProfileInline(admin.StackedInline):
     fields = ["display_name", "community_role", "position"]
 
     def get_readonly_fields(self, request, obj=None):
-        from .policies import is_developer
-        return [] if is_developer(request.user) else ["community_role", "position"]
+        from .policies import is_application_admin
+        return [] if is_application_admin(request.user) else ["community_role", "position"]
 
 
 class AccountAdmin(UserAdmin):

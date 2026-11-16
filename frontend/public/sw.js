@@ -1,7 +1,7 @@
 /* Only this public offline page and icons are cached. Never cache API responses,
    account pages, uploaded media, or subscriber content. */
-const CACHE = "rhema-public-v1";
-const PUBLIC_FILES = ["/offline.html", "/icons/icon-192.png", "/icons/icon-512.png"];
+const CACHE = "rhema-public-v3";
+const PUBLIC_FILES = ["/offline.html", "/icons/icon-192-v3.png", "/icons/icon-512-v3.png", "/icons/icon-maskable-512-v3.png", "/icons/apple-touch-icon-v3.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(PUBLIC_FILES)));
@@ -35,7 +35,7 @@ self.addEventListener("push", (event) => {
   try { data = event.data?.json() || {}; } catch { /* Show a generic notification. */ }
   event.waitUntil(self.registration.showNotification("RHEMA CUC", {
     body: data.body || "Há novidades na Comunidade Unidos em Cristo.",
-    icon: "/icons/icon-192.png",
+    icon: "/icons/icon-192-v3.png",
     tag: data.tag || "rhema-novidades",
     renotify: false,
     data: { url: notificationUrl(data.url) },

@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 import re
 
 from .models import Profile
-from .policies import account_roles, can_publish_phone, consumption_capabilities, profile_role, is_developer
+from .policies import account_roles, can_publish_phone, consumption_capabilities, profile_role, is_developer, is_application_admin
 from .images import avatar_url, clean_avatar
 from apps.content.video import video_id, embed_url
 
@@ -143,11 +143,12 @@ def account_data(user):
         "subscription_access_until": subscription["access_until"],
         "can_manage_editorial_groups": managed_groups(user).exists(),
         "can_create_groups": can_create_groups(user),
-        "can_access_panel": bool(user.is_active and (user.is_superuser or user.editorial_memberships.filter(group__is_active=True).exists() or can_manage(user))),
+        "can_access_panel": bool(user.is_active and (is_application_admin(user) or profile.community_role in {"columnist", "priest", "deacon"} or user.editorial_memberships.filter(group__is_active=True).exists() or can_manage(user))),
         "can_manage_communications": can_manage(user),
         "can_delegate_communications": can_delegate(user),
         "communication_sections": [kind for kind in ["events", "notices", "campaigns"] if can_manage(user, kind)],
-        "can_order_members": is_developer(user),
+        "can_order_members": is_application_admin(user),
+        "can_assign_developer": is_developer(user),
         "can_handle_inbox": can_handle_inbox(user),
         "editorial_groups": list(Membership.objects.filter(user=user, group__is_active=True).values("group__name", "group__slug", "role")),
     }

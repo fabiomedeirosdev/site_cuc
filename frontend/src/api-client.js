@@ -56,6 +56,8 @@ export function createApiClient({ baseUrl = "", mediaBaseUrl = baseUrl, fetchImp
     respondToIncomingMessage: (id, responded) => write(`/api/inbox/${id}`, "PATCH", { responded }),
     getTeam: (page = 1, query = "", options) => request(`/api/management/team?page=${page}&q=${encodeURIComponent(query)}`, options),
     addTeamMember: (data) => write("/api/management/team", "POST", data),
+    deleteTeamMember: (id) => write(`/api/management/team/${id}`, "DELETE"),
+    deleteUser: (id) => write(`/api/management/users/${id}`, "DELETE"),
     updateTeamMember: (id, data) => write(`/api/management/team/${id}`, "PATCH", data),
     getGroupArticles: (slug, page = 1, options) => request(`/api/articles?group=${encodeURIComponent(slug)}&page=${page}`, options),
     getEvents: (page = 1, past = false, options) => request(`/api/events?page=${page}&past=${past ? 1 : 0}`, options),

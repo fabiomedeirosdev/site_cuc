@@ -6,7 +6,7 @@ from .images import profile_image_storage
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
-    community_role = models.CharField("função geral", max_length=20, blank=True, choices=[("founder", "Fundador(a)"), ("developer", "Desenvolvedor(a)"), ("columnist", "Facilitador(a)")])
+    community_role = models.CharField("função geral", max_length=20, blank=True, choices=[("founder", "Fundador(a)"), ("developer", "Desenvolvedor(a)"), ("columnist", "Facilitador(a)"), ("administration", "Administração"), ("priest", "Padre"), ("deacon", "Diácono")])
     position = models.PositiveSmallIntegerField("ordem de exibição", default=0)
     notifications_seen_at = models.DateTimeField(null=True, blank=True)
     display_name = models.CharField("nome de exibição", max_length=150, blank=True)

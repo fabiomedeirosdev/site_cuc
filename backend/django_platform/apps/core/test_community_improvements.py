@@ -52,12 +52,13 @@ class CommunityImprovementsTests(TestCase):
         self.assertEqual(profile_role(self.founder), ("founder", "Fundador(a)"))
         self.assertTrue(self.client.get("/api/auth/me").json()["can_access_panel"])
 
-    def test_only_developer_can_set_position_and_profile_cannot_escalate(self):
-        for actor in [self.founder, self.coordinator, self.helper, self.reader]:
+    def test_developer_and_founder_can_set_position_and_profile_cannot_escalate(self):
+        for actor in [self.coordinator, self.helper, self.reader]:
             self.login(actor)
             self.assertEqual(self.client.patch(f"/api/management/team/{self.helper.pk}", {"position": 7}, format="json").status_code, 403)
-        self.login(self.developer)
-        self.assertEqual(self.client.patch(f"/api/management/team/{self.helper.pk}", {"position": 7}, format="json").status_code, 200)
+        for actor in [self.developer, self.founder]:
+            self.login(actor)
+            self.assertEqual(self.client.patch(f"/api/management/team/{self.helper.pk}", {"position": 7}, format="json").status_code, 200)
         self.login(self.helper)
         self.assertEqual(self.client.patch("/api/auth/me", {"community_role": "founder"}, format="json").status_code, 400)
 

@@ -31,6 +31,9 @@ def profile_role(user):
         return "developer", "Desenvolvedor(a)"
     if getattr(getattr(user, "profile", None), "community_role", "") == "founder":
         return "founder", "Fundador(a)"
+    general_role = getattr(getattr(user, "profile", None), "community_role", "")
+    if general_role in {"administration", "priest", "deacon"}:
+        return general_role, {"administration": "Administração", "priest": "Padre", "deacon": "Diácono"}[general_role]
     if managed_groups(user).exists():
         return "coordinator", "Coordenador(a)"
     if user.editorial_memberships.filter(group__is_active=True, role="columnist").exists():
@@ -41,7 +44,7 @@ def profile_role(user):
 
 
 def can_publish_phone(user):
-    return bool(user.is_authenticated and user.is_active and profile_role(user)[0] in {"developer", "founder", "coordinator"})
+    return bool(user.is_authenticated and user.is_active and profile_role(user)[0] in {"developer", "founder", "coordinator", "administration"})
 
 
 def consumption_capabilities(user):
@@ -54,7 +57,7 @@ def consumption_capabilities(user):
         "edit_content": author,
         "publish_content": author,
         "comment": False,
-        "manage_users": bool(active and user.is_staff and user.has_perm("auth.change_user")),
+        "manage_users": is_application_admin(user),
     }
 
 

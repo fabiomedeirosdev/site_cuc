@@ -25,7 +25,7 @@ class Event(models.Model):
     is_published = models.BooleanField(default=False)
     is_cancelled = models.BooleanField(default=False)
     is_members_only = models.BooleanField("apenas para assinantes", default=False)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -39,7 +39,7 @@ class Notice(models.Model):
     is_members_only = models.BooleanField("apenas para assinantes", default=False)
     image = models.ImageField("imagem de divulgação", storage=communication_image_storage, upload_to="notices/%Y/%m/", blank=True)
     image_alt = models.CharField("descrição da imagem", max_length=200, blank=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -85,7 +85,7 @@ class Campaign(models.Model):
     scheduled_at = models.DateTimeField(null=True, blank=True)
     weekly_key = models.CharField(max_length=20, null=True, unique=True, editable=False)
     snapshot = models.JSONField(default=dict, editable=False)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     error = models.CharField(max_length=100, blank=True)
 

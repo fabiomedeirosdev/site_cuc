@@ -1,8 +1,24 @@
 # RHEMA CUC — PWA e Web Push
 
-A PWA usa o ícone original `assets/icons/RHEMA CUC.png` e o nome **RHEMA CUC**
-no manifest e no título da Tela de Início do iPhone. Os PNGs de 192, 512 e 180 px
-preservam a imagem; a variante maskable inclui margem para os recortes do Android.
+A PWA usa diretamente o ícone aprovado `assets/icons/RHEMA CUC.png` e o nome
+**RHEMA CUC** no manifest e no título da Tela de Início do iPhone. O quadrado
+dourado, a moldura, a cruz, o coração e a pomba são preservados. A transparência
+fica somente fora do quadrado arredondado; nenhum fundo externo é acrescentado.
+
+Os PNGs `*-v3.png` de 192, 512 e 180 px preservam o canal alpha. Os arquivos de
+512 px são cópias exatas do original. A versão Android não reduz o quadrado
+dentro de outra área com margem: o launcher aplica o recorte da plataforma à
+arte completa. O sistema/launcher pode preencher a transparência com uma cor
+própria ou recortar a borda decorativa; uma PWA não controla esse preenchimento.
+Veja a
+[especificação de máscaras de ícones](https://www.w3.org/TR/appmanifest/#icon-masks).
+
+Para regenerar os tamanhos a partir da imagem original, execute
+`powershell -File scripts/build-pwa-icons.ps1` na raiz do projeto.
+O manifest, o ícone Apple, o botão de instalação e as notificações usam a nova
+versão. As URLs e a versão do cache foram alteradas para evitar reutilização
+dos arquivos antigos. Depois de publicar a atualização, remova o aplicativo
+antigo da tela inicial e instale novamente pelo navegador para renovar o ícone.
 
 ## Arquitetura
 

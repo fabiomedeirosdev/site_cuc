@@ -26,14 +26,16 @@ class PublicProfilesView(AccountAPIView):
         role = request.query_params.get("role", "")
         coordinators = Membership.objects.filter(group__is_active=True, role="coordinator").values("user_id")
         auxiliaries = Membership.objects.filter(group__is_active=True, role="columnist").values("user_id")
-        if role == "founder":
+        if role in {"administration", "priest", "deacon"}:
+            profiles = profiles.filter(community_role=role, user__is_superuser=False)
+        elif role == "founder":
             profiles = profiles.filter(community_role="founder", user__is_superuser=False)
         elif role == "developer":
             profiles = profiles.filter(Q(user__is_superuser=True) | Q(community_role="developer"))
         elif role == "coordinator":
-            profiles = profiles.filter(user_id__in=coordinators, user__is_superuser=False).exclude(community_role__in=["founder", "developer"])
+            profiles = profiles.filter(user_id__in=coordinators, user__is_superuser=False).exclude(community_role__in=["founder", "developer", "administration", "priest", "deacon"])
         elif role == "auxiliary":
-            profiles = profiles.filter(Q(user_id__in=auxiliaries) | Q(community_role="columnist"), user__is_superuser=False).exclude(user_id__in=coordinators).exclude(community_role__in=["founder", "developer"])
+            profiles = profiles.filter(Q(user_id__in=auxiliaries) | Q(community_role="columnist"), user__is_superuser=False).exclude(user_id__in=coordinators).exclude(community_role__in=["founder", "developer", "administration", "priest", "deacon"])
         elif role == "subscriber":
             profiles = profiles.filter(user__is_superuser=False, community_role="").exclude(user_id__in=coordinators).exclude(user_id__in=auxiliaries)
         elif role:

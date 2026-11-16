@@ -72,7 +72,7 @@ class ConsumerRequest(models.Model):
 
 
 class LegalAcceptance(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     version = models.CharField(max_length=40)
     source = models.CharField(max_length=30)
     accepted_at = models.DateTimeField(auto_now_add=True)

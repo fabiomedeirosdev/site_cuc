@@ -30,7 +30,7 @@ class ArticleSummarySerializer(serializers.ModelSerializer):
         return public_name(obj.author)
 
     def get_author_profile_url(self, obj):
-        return f"/perfis/{obj.author.profile.public_id}"
+        return f"/perfis/{obj.author.profile.public_id}" if obj.author_id else None
 
     def get_cover_url(self, obj):
         return public_image_url(obj.cover.file) if obj.cover else None

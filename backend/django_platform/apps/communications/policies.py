@@ -4,7 +4,7 @@ from .models import Delegation
 
 
 def can_coordinate(user):
-    return bool(user and user.is_authenticated and user.is_active and (is_editorial_admin(user) or managed_groups(user).exists()))
+    return bool(user and user.is_authenticated and user.is_active and (is_editorial_admin(user) or user.profile.community_role == "administration" or managed_groups(user).exists()))
 
 
 def candidates(user):
@@ -18,7 +18,7 @@ def can_delegate(user):
 def facilitator_users():
     from django.contrib.auth import get_user_model
     from django.db.models import Q
-    return get_user_model().objects.filter(is_active=True).filter(Q(profile__community_role="columnist") | Q(editorial_memberships__role="columnist", editorial_memberships__group__is_active=True)).distinct()
+    return get_user_model().objects.filter(is_active=True).filter(Q(profile__community_role__in=["columnist", "priest", "deacon"]) | Q(editorial_memberships__role="columnist", editorial_memberships__group__is_active=True)).distinct()
 
 
 def can_manage(user, kind=None):

@@ -21,7 +21,7 @@ from .models import IncomingMessage
 def can_handle_inbox(user):
     return bool(user.is_authenticated and user.is_active and (
         is_editorial_admin(user)
-        or getattr(getattr(user, "profile", None), "community_role", "") == "columnist"
+        or getattr(getattr(user, "profile", None), "community_role", "") in {"columnist", "priest", "deacon", "administration"}
         or user.editorial_memberships.filter(group__is_active=True, role__in=["columnist", "coordinator"]).exists()
     ))
 

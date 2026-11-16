@@ -14,6 +14,7 @@ from rest_framework.response import Response
 
 from apps.accounts.models import Profile
 from apps.accounts.policies import is_developer, profile_role
+from apps.accounts.serializers import ProfileUpdateSerializer
 from apps.editorial.models import EditorialGroup, Membership
 from apps.editorial.policies import public_name
 from .management_views import AdminView, paginate
@@ -23,7 +24,12 @@ class TeamInput(serializers.Serializer):
     email = serializers.EmailField(required=False)
     display_name = serializers.CharField(max_length=150, required=False)
     password = serializers.CharField(max_length=1024, required=False, write_only=True, trim_whitespace=False)
-    role = serializers.ChoiceField(choices=["", "founder", "developer", "columnist", "coordinator"], required=False)
+    role = serializers.ChoiceField(choices=["", "founder", "developer", "columnist", "coordinator", "administration", "priest", "deacon"], required=False)
+    biography = serializers.CharField(max_length=3000, required=False, allow_blank=True)
+    website = serializers.URLField(max_length=500, required=False, allow_blank=True)
+    video_url = serializers.URLField(max_length=1000, required=False, allow_blank=True)
+    first_name = serializers.CharField(max_length=150, required=False, allow_blank=True)
+    last_name = serializers.CharField(max_length=150, required=False, allow_blank=True)
     group = serializers.PrimaryKeyRelatedField(queryset=EditorialGroup.objects.all(), allow_null=True, required=False)
     position = serializers.IntegerField(min_value=0, max_value=32767, required=False)
 
@@ -35,7 +41,8 @@ class TeamInput(serializers.Serializer):
 
 def team_row(profile):
     return {"id": profile.user_id, "display_name": public_name(profile.user), "email": profile.user.email,
-            "role": profile_role(profile.user)[0], "community_role": profile.community_role, "position": profile.position}
+            "role": profile_role(profile.user)[0], "community_role": profile.community_role, "position": profile.position, "biography": profile.biography, "website": profile.website,
+            "video_url": profile.video_url, "first_name": profile.user.first_name, "last_name": profile.user.last_name}
 
 
 @method_decorator(sensitive_post_parameters("password"), name="dispatch")
@@ -51,8 +58,6 @@ class TeamView(AdminView):
         form = TeamInput(data=request.data, partial=partial)
         form.is_valid(raise_exception=True)
         values = form.validated_data
-        if "position" in values and not is_developer(request.user):
-            raise PermissionDenied("Somente o(a) Desenvolvedor(a) pode alterar a ordem dos membros.")
         if values.get("role") == "developer" and not is_developer(request.user):
             raise PermissionDenied("Somente o(a) Desenvolvedor(a) pode atribuir essa função.")
         return values
@@ -97,7 +102,7 @@ class TeamView(AdminView):
             raise ValidationError({"group": "Coordenadores mantêm o vínculo obrigatório com um grupo."})
         if role == "coordinator" and profile.community_role:
             raise ValidationError({"role": "Remova a função geral antes de atribuir a coordenação."})
-        if role in {"founder", "developer", "columnist", ""}:
+        if role in {"founder", "developer", "columnist", "administration", "priest", "deacon", ""}:
             profile.community_role = role
         if "position" in values:
             profile.position = values["position"]
@@ -111,8 +116,41 @@ class TeamView(AdminView):
 
     @transaction.atomic
     def patch(self, request, pk):
-        if set(request.data) - {"role", "position"}:
-            raise ValidationError("Edite somente a função geral e a ordem.")
+        if set(request.data) - {"role", "position", "display_name", "email", "biography", "website", "video_url", "first_name", "last_name"}:
+            raise ValidationError("Informe somente os dados editáveis do membro.")
         user = get_object_or_404(get_user_model().objects.select_related("profile"), pk=pk)
-        self.assign(request, user, self.validate_input(request, partial=True))
+        values = self.validate_input(request, partial=True)
+        self.assign(request, user, values)
+        if "email" in values:
+            email = values["email"].strip().lower()
+            if get_user_model().objects.filter(email__iexact=email).exclude(pk=user.pk).exists():
+                raise ValidationError({"email": "Este e-mail já está em uso."})
+            user.email = email
+            # Invalidate an earlier email change request after administrative edits.
+            user.profile.pending_email = ""
+            user.profile.email_change_hash = ""
+            user.profile.email_change_auth_hash = ""
+            user.profile.email_change_expires_at = None
+            user.profile.save(update_fields=["pending_email", "email_change_hash", "email_change_auth_hash", "email_change_expires_at"])
+        for field in ["first_name", "last_name"]:
+            if field in values:
+                setattr(user, field, values[field])
+        user.save(update_fields=["email", "first_name", "last_name"])
+        profile_data = {key: value for key, value in values.items() if key in {"display_name", "biography", "website", "video_url"}}
+        form = ProfileUpdateSerializer(user.profile, data=profile_data, partial=True)
+        form.is_valid(raise_exception=True)
+        form.save()
         return Response(team_row(user.profile))
+
+    @transaction.atomic
+    def delete(self, request, pk):
+        user = get_object_or_404(get_user_model().objects.select_related("profile"), pk=pk)
+        if user.pk == request.user.pk:
+            raise PermissionDenied("Você não pode excluir a própria conta neste painel.")
+        if (user.is_superuser or user.profile.community_role == "developer") and not is_developer(request.user):
+            raise PermissionDenied("Esta conta é administrada pelo(a) Desenvolvedor(a).")
+        # Newsletter delivery history stays available, but this account stops receiving mail.
+        from apps.communications.models import NewsletterPreference
+        NewsletterPreference.objects.filter(user=user).update(opted_in=False)
+        user.delete()
+        return Response(status=204)

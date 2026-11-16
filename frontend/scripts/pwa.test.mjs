@@ -38,10 +38,12 @@ test("manifest and supplied icon variants identify RHEMA CUC", async () => {
   assert.equal(manifest.name, "RHEMA CUC");
   assert.equal(manifest.short_name, "RHEMA CUC");
   assert.equal(manifest.display, "standalone");
-  for (const icon of [...manifest.icons, { src: "/icons/apple-touch-icon.png", sizes: "180x180" }]) {
+  const approvedIcon = await readFile(new URL("../../assets/icons/RHEMA CUC.png", import.meta.url));
+  for (const icon of [...manifest.icons, { src: "/icons/apple-touch-icon-v3.png", sizes: "180x180" }]) {
     const bytes = await readFile(new URL(icon.src.slice(1), publicRoot));
     assert.equal(bytes.subarray(1, 4).toString(), "PNG");
     assert.equal(`${bytes.readUInt32BE(16)}x${bytes.readUInt32BE(20)}`, icon.sizes);
+    if (icon.sizes === "512x512") assert.deepEqual(bytes, approvedIcon, "Preserve the approved gold tile and transparent exterior without padding");
   }
 });
 

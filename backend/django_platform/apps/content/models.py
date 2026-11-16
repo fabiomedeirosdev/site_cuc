@@ -24,7 +24,7 @@ class Article(models.Model):
         PUBLIC = "public", "Público"
         MEMBERS = "members", "Exclusivo para assinantes"
 
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="articles")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="articles")
     group = models.ForeignKey("editorial.EditorialGroup", on_delete=models.PROTECT, related_name="articles")
     title = models.CharField("título", max_length=200)
     excerpt = models.CharField("resumo", max_length=500, blank=True)

@@ -14,6 +14,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from apps.accounts.views import AccountAPIView
+from apps.accounts.policies import is_developer, profile_role
 from .media import public_image_url
 from apps.billing.models import ConsumerRequest, Subscription
 from apps.communications.models import Campaign, Event, Notice
@@ -31,6 +32,7 @@ def can_open_panel(user):
     return bool(user.is_authenticated and user.is_active and (
         is_editorial_admin(user) or editable_articles(user).exists()
         or user.editorial_memberships.filter(group__is_active=True).exists() or can_manage(user)
+        or getattr(user.profile, "community_role", "") in {"columnist", "priest", "deacon"}
     ))
 
 
@@ -125,7 +127,10 @@ class UsersView(AdminView):
             users = users.filter(Q(email__icontains=query) | Q(profile__display_name__icontains=query))
         return paginate(request, users, lambda user: {"id": user.pk, "name": public_name(user), "email": user.email,
             "is_active": user.is_active, "is_administrator": is_editorial_admin(user),
-            "access_protected": user.is_staff or is_editorial_admin(user) or user.pk == request.user.pk, "joined_at": user.date_joined})
+            "access_protected": user.is_staff or is_editorial_admin(user) or user.pk == request.user.pk, "joined_at": user.date_joined,
+            "role_label": profile_role(user)[1],
+            "can_edit": not (user.is_superuser or user.profile.community_role == "developer") or is_developer(request.user),
+            "can_delete": user.pk != request.user.pk and (not (user.is_superuser or user.profile.community_role == "developer") or is_developer(request.user))})
 
 
 class UserAccessInput(serializers.Serializer):
@@ -133,6 +138,10 @@ class UserAccessInput(serializers.Serializer):
 
 
 class UserAccessView(AdminView):
+    def delete(self, request, pk):
+        from .team_views import TeamView
+        return TeamView.delete(self, request, pk)
+
     def patch(self, request, pk):
         user = get_object_or_404(get_user_model(), pk=pk)
         if user.pk == request.user.pk or is_editorial_admin(user) or user.is_staff:

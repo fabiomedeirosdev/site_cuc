@@ -1,5 +1,5 @@
 export { default as logo } from "../../assets/logo/logo.png";
-export { default as rhemaAppIcon } from "../../assets/icons/rhema-cuc-192.png";
+export const rhemaAppIcon = "/icons/icon-192-v3.png";
 export { default as logoSmall } from "../../assets/logo/logo_2.png";
 export { default as heroMary } from "../../assets/logo/hero_maria.jpg";
 export { default as rhema } from "../../assets/logo/rhematerapia.png";
