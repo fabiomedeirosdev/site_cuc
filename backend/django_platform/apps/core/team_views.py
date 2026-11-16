@@ -45,17 +45,47 @@ def team_row(profile):
             "video_url": profile.video_url, "first_name": profile.user.first_name, "last_name": profile.user.last_name}
 
 
+class TeamMembershipInput(serializers.Serializer):
+    group = serializers.PrimaryKeyRelatedField(queryset=EditorialGroup.objects.all())
+    role = serializers.ChoiceField(choices=Membership.Role.choices)
+
+    def validate(self, attrs):
+        if "group" not in attrs or "role" not in attrs:
+            raise ValidationError("Informe o grupo e a função nesse grupo.")
+        return attrs
+
+
+class TeamUpdateInput(TeamInput):
+    memberships = TeamMembershipInput(many=True, required=False)
+
+    def validate_memberships(self, values):
+        group_ids = [value["group"].pk for value in values]
+        if len(group_ids) != len(set(group_ids)):
+            raise ValidationError("Escolha cada grupo apenas uma vez.")
+        return values
+
+
+def team_detail(profile):
+    return {
+        **team_row(profile),
+        "memberships": list(profile.user.editorial_memberships.values("group", "role")),
+        "available_groups": list(EditorialGroup.objects.order_by("name", "pk").values("id", "name", "is_active")),
+    }
+
+
 @method_decorator(sensitive_post_parameters("password"), name="dispatch")
 class TeamView(AdminView):
-    def get(self, request):
+    def get(self, request, pk=None):
         profiles = Profile.objects.select_related("user").order_by("position", "pk")
+        if pk is not None:
+            return Response(team_detail(get_object_or_404(profiles, user_id=pk)))
         query = request.query_params.get("q", "").strip()[:150]
         if query:
             profiles = profiles.filter(Q(display_name__icontains=query) | Q(user__email__icontains=query))
         return paginate(request, profiles, team_row)
 
     def validate_input(self, request, partial=False):
-        form = TeamInput(data=request.data, partial=partial)
+        form = (TeamUpdateInput if partial else TeamInput)(data=request.data, partial=partial)
         form.is_valid(raise_exception=True)
         values = form.validated_data
         if values.get("role") == "developer" and not is_developer(request.user):
@@ -116,7 +146,7 @@ class TeamView(AdminView):
 
     @transaction.atomic
     def patch(self, request, pk):
-        if set(request.data) - {"role", "position", "display_name", "email", "biography", "website", "video_url", "first_name", "last_name"}:
+        if set(request.data) - {"role", "position", "display_name", "email", "biography", "website", "video_url", "first_name", "last_name", "memberships"}:
             raise ValidationError("Informe somente os dados editáveis do membro.")
         user = get_object_or_404(get_user_model().objects.select_related("profile"), pk=pk)
         values = self.validate_input(request, partial=True)
@@ -140,7 +170,12 @@ class TeamView(AdminView):
         form = ProfileUpdateSerializer(user.profile, data=profile_data, partial=True)
         form.is_valid(raise_exception=True)
         form.save()
-        return Response(team_row(user.profile))
+        if "memberships" in values:
+            memberships = values["memberships"]
+            user.editorial_memberships.exclude(group_id__in=[value["group"].pk for value in memberships]).delete()
+            for membership in memberships:
+                Membership.objects.update_or_create(user=user, group=membership["group"], defaults={"role": membership["role"]})
+        return Response(team_detail(user.profile))
 
     @transaction.atomic
     def delete(self, request, pk):

@@ -19,7 +19,7 @@ export function LoginPage() {
   const [error, setError] = useState("");
   useEffect(() => { ensureSession(); }, [ensureSession]);
   const safeDestination = ["/agenda.html", "/mural.html", "/area-associado.html", "/perfil.html", "/gestao-grupos.html", "/meus-conteudos.html", "/minha-assinatura.html", "/cadastro.html"].includes(state?.from) || /^\/editor\/(novo|[1-9]\d*)$/.test(state?.from || "");
-  const panelDestination = /^\/painel(?:\/(destaques|grupos(?:\/novo)?|fundadores|usuarios|assinaturas|atendimentos|mensagens))?$/.test(state?.from || "");
+  const panelDestination = /^\/painel(?:\/(destaques|grupos(?:\/novo)?|fundadores|usuarios(?:\/[1-9]\d*\/editar)?|assinaturas|atendimentos|mensagens))?$/.test(state?.from || "");
   const destination = state?.from === "/gestao-comunicacao.html" || safeDestination || panelDestination ? state.from : "/area-associado.html";
   if (status === "authenticated") return <Navigate to={destination} replace state={state?.invitation ? { invitation: state.invitation } : undefined} />;
   async function submit(event) {

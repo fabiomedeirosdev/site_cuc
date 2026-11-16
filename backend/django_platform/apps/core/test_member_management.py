@@ -62,6 +62,74 @@ class MemberManagementTests(TestCase):
         self.assertEqual(self.client.delete(f'/api/management/users/{self.developer.pk}').status_code, 403)
         self.assertEqual(self.client.patch(f'/api/management/team/{self.founder.pk}', {'role': 'developer'}, format='json').status_code, 403)
 
+    def test_selected_member_detail_returns_only_requested_person(self):
+        self.client.force_authenticate(self.founder)
+        response = self.client.get(f'/api/management/team/{self.developer.pk}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['id'], self.developer.pk)
+        self.assertEqual(response.json()['email'], self.developer.email)
+        self.assertNotIn('results', response.json())
+        self.assertEqual(self.client.get('/api/management/team/99999999').status_code, 404)
+        reader = self.person('subscriber')
+        self.client.force_authenticate(reader)
+        self.assertEqual(self.client.get(f'/api/management/team/{self.founder.pk}').status_code, 403)
+
+    def test_edit_groups_and_roles_preserves_membership_details_and_other_people(self):
+        target = self.person('columnist')
+        other_group = EditorialGroup.objects.create(name='Outro grupo', slug='second-membership')
+        original = Membership.objects.create(user=target, group=self.group, role='columnist', biography='Apresentação do grupo', is_public=True)
+        other_person = Membership.objects.create(user=self.developer, group=self.group, role='coordinator')
+        self.client.force_authenticate(self.founder)
+        url = f'/api/management/team/{target.pk}'
+        response = self.client.patch(url, {'memberships': [
+            {'group': self.group.pk, 'role': 'coordinator'},
+            {'group': other_group.pk, 'role': 'columnist'},
+        ]}, format='json')
+        self.assertEqual(response.status_code, 200, response.data)
+        original.refresh_from_db()
+        other_person.refresh_from_db()
+        self.assertEqual(original.role, 'coordinator')
+        self.assertTrue(original.is_public)
+        self.assertEqual(original.biography, 'Apresentação do grupo')
+        self.assertEqual(other_person.role, 'coordinator')
+        self.assertEqual(set(managed_groups(target).values_list('pk', flat=True)), {self.group.pk})
+        detail = self.client.get(url).json()
+        self.assertEqual(len(detail['memberships']), 2)
+        self.assertIn(other_group.pk, [group['id'] for group in detail['available_groups']])
+        self.assertEqual(self.client.patch(url, {'display_name': 'Novo nome'}, format='json').status_code, 200)
+        self.assertEqual(target.editorial_memberships.count(), 2)
+        self.assertEqual(self.client.patch(url, {'memberships': [
+            {'group': self.group.pk, 'role': 'columnist'},
+        ]}, format='json').status_code, 200)
+        self.assertFalse(managed_groups(target).exists())
+        self.assertEqual(target.editorial_memberships.count(), 1)
+        self.assertEqual(self.client.patch(url, {'memberships': []}, format='json').status_code, 200)
+        self.assertFalse(target.editorial_memberships.exists())
+        self.assertTrue(Membership.objects.filter(pk=other_person.pk).exists())
+
+    def test_invalid_group_edits_are_rejected_without_partial_changes(self):
+        target = self.person('columnist')
+        original = Membership.objects.create(user=target, group=self.group, role='columnist')
+        self.client.force_authenticate(self.founder)
+        url = f'/api/management/team/{target.pk}'
+        invalid = [
+            [{'group': self.group.pk, 'role': 'founder'}],
+            [{'group': 99999999, 'role': 'columnist'}],
+            [{'group': self.group.pk}],
+            [{'role': 'coordinator'}],
+            [{'group': self.group.pk, 'role': 'columnist'}, {'group': self.group.pk, 'role': 'coordinator'}],
+        ]
+        for memberships in invalid:
+            with self.subTest(memberships=memberships):
+                response = self.client.patch(url, {'role': 'founder', 'memberships': memberships}, format='json')
+                self.assertEqual(response.status_code, 400, response.data)
+                target.refresh_from_db()
+                original.refresh_from_db()
+                self.assertEqual(target.profile.community_role, 'columnist')
+                self.assertEqual(original.role, 'columnist')
+        self.client.force_authenticate(target)
+        self.assertEqual(self.client.patch(url, {'memberships': [{'group': self.group.pk, 'role': 'coordinator'}]}, format='json').status_code, 403)
+
     def test_duplicate_email_rolls_back_profile_changes(self):
         self.client.force_authenticate(self.developer)
         response = self.client.patch(f'/api/management/team/{self.founder.pk}', {

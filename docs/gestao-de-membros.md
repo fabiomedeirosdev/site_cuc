@@ -1,6 +1,8 @@
 # Gestão de membros e funções
 
-Desenvolvedores e fundadores podem editar nome, e-mail, biografia, site, vídeo de apresentação, função geral e ordem de exibição em **Equipes e permissões → Membros da Comunidade** (`/gestao-grupos.html`). A página **Painel → Usuários** também oferece acesso à edição e à exclusão.
+**Equipes e permissões → Membros da Comunidade** (`/gestao-grupos.html`) mantém o cadastro de integrantes com nome, e-mail, senha inicial, grupo e função. Nenhuma lista geral ou formulário de edição é aberto nessa área. A busca apresenta somente resultados compactos e paginados, com acesso ao cadastro da pessoa selecionada.
+
+Desenvolvedores e fundadores editam nome, e-mail, biografia, site, vídeo de apresentação, função geral e ordem de exibição em **Painel → Usuários → Editar dados e função**. A rota `/painel/usuarios/:id/editar` carrega e salva exclusivamente o usuário escolhido. A exclusão continua em **Painel → Usuários**. O formulário pessoal **Meu perfil** permanece como está.
 
 A exclusão exige confirmação na interface, remove a conta e os vínculos e interrompe o recebimento da newsletter. Os registros de pagamentos, aceites, publicações e comunicações são preservados sem vínculo com a conta excluída. Publicações sem autor deixam de aparecer na leitura pública. A própria conta não pode ser excluída por esse painel. Contas de desenvolvedores e a atribuição dessa função continuam restritas a desenvolvedores.
 
@@ -10,7 +12,7 @@ A exclusão exige confirmação na interface, remove a conta e os vínculos e in
 | Administração | Permissões de coordenação nos grupos vinculados, criação de grupos e gestão de comunicação; sem gestão geral de usuários. |
 | Padre, Diácono | Permissões de facilitador: criação e edição de conteúdos nos grupos vinculados e comunicação conforme delegação. |
 
-Os vínculos existentes com grupos permanecem ao editar a função geral. A função de coordenador de um grupo é editada na equipe desse grupo. As funções não liberam conteúdos exclusivos sem assinatura válida.
+Em **Editar usuário → Participação nos grupos**, escolha o grupo e a função de Coordenador(a) ou Facilitador(a). Os vínculos existentes aparecem preenchidos; é possível alterar a função, adicionar outro grupo ou remover um vínculo antes de salvar. Os dados, a função geral e os vínculos são salvos juntos. A apresentação e a visibilidade dos vínculos mantidos são preservadas. Alterar somente a função geral não muda os vínculos. As funções não liberam conteúdos exclusivos sem assinatura válida.
 
 Antes de executar a versão atualizada do backend, aplique as migrações:
 

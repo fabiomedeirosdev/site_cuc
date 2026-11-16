@@ -15,6 +15,7 @@ import { ContentCatalogPage, ContentReadPage, MyContentPage, ContentEditorPage }
 import { SubscribePage, MySubscriptionPage } from "./pages/SubscriptionPages.jsx";
 import { AgendaPage, MuralPage, ManageCommunicationsPage, NewsletterActionPage } from "./pages/CommunicationsPages.jsx";
 import InboxPage from "./pages/InboxPage.jsx";
+import ManageUserPage from "./pages/ManageUserPage.jsx";
 import { DashboardPage, HighlightsPage, GroupSettingsPage, NewGroupPage, AdministrationTablePage } from "./pages/ManagementPages.jsx";
 
 const pageTitles = {
@@ -120,6 +121,7 @@ export function AppRoutes() {
       <Route path="/painel/grupos" element={<RequireAuth><GroupSettingsPage /></RequireAuth>} />
       <Route path="/painel/grupos/novo" element={<RequireAuth><NewGroupPage /></RequireAuth>} />
       <Route path="/painel/usuarios" element={<RequireAuth><AdministrationTablePage key="users" section="users" /></RequireAuth>} />
+      <Route path="/painel/usuarios/:id/editar" element={<RequireAuth><ManageUserPage /></RequireAuth>} />
       <Route path="/painel/assinaturas" element={<RequireAuth><AdministrationTablePage key="subscriptions" section="subscriptions" /></RequireAuth>} />
       <Route path="/painel/atendimentos" element={<RequireAuth><AdministrationTablePage key="requests" section="requests" /></RequireAuth>} />
       <Route path="/" element={<HomePage />} />
