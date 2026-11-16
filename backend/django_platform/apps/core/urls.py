@@ -3,11 +3,13 @@ from django.urls import path
 from apps.core.views import health, readiness
 from .management_views import DashboardView, HighlightView, UsersView, UserAccessView, SubscriptionsView, RequestsView, GroupSettingsView
 from .founders_views import ManageFoundersView, PublicFoundersView
+from .media import PublicImageView
 from .team_views import TeamView
 from .notifications import InboxView, NotificationsView
 
 
 urlpatterns = [
+    path("public-images/<path:name>", PublicImageView.as_view()),
     path("notifications", NotificationsView.as_view()),
     path("inbox", InboxView.as_view()),
     path("inbox/<int:pk>", InboxView.as_view()),

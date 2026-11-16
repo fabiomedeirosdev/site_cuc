@@ -1,0 +1,12 @@
+.rhema-pwa { display:flex; align-items:flex-start; gap:28px; padding:32px; margin:32px 0; background:#fffaf2; border:1px solid #dfcbb4; border-radius:16px; }
+.rhema-pwa > img { flex:0 0 96px; border-radius:20px; }
+.rhema-pwa-copy { min-width:0; }
+.rhema-pwa h2 { margin:0 0 12px; color:#760b08; font-size:clamp(22px,3vw,30px); line-height:1.25; }
+.rhema-pwa p { line-height:1.6; margin:0 0 16px; }
+.rhema-pwa-actions { display:flex; flex-wrap:wrap; gap:12px; margin:20px 0; }
+.rhema-pwa button { white-space:normal; text-align:center; }
+.rhema-pwa button:disabled { opacity:.65; cursor:default; }
+.rhema-pwa-help { border-left:3px solid #b89148; padding-left:16px; margin-top:20px; }
+.rhema-pwa .rhema-pwa-hint { font-size:13px; }
+.rhema-pwa [role=status]:empty { display:none; }
+@media(max-width:600px) { .rhema-pwa { flex-direction:column; padding:24px 18px; gap:20px; } .rhema-pwa-actions { flex-direction:column; } .rhema-pwa-actions button { width:100%; justify-content:center; } }

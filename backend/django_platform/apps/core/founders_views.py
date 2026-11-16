@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from apps.accounts.views import AccountAPIView
 from apps.communications.images import clean_communication_image
 from .management_views import AdminView
+from .media import public_image_url
 from .models import FoundersPage
 
 
@@ -21,7 +22,7 @@ class FoundersSerializer(serializers.ModelSerializer):
         read_only_fields = ["photo_url", "updated_at"]
 
     def get_photo_url(self, obj):
-        return obj.photo.url if obj.photo else None
+        return public_image_url(obj.photo)
 
     def to_internal_value(self, data):
         if not isinstance(data, dict) or set(data) - {"title", "body", "photo", "photo_alt"}:

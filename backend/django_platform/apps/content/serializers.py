@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from apps.editorial.models import EditorialGroup
 from apps.editorial.policies import is_editorial_admin, public_name
+from apps.core.media import public_image_url
 from .models import Article, CoverImage
 from .policies import author_groups
 from .video import embed_url, video_id
@@ -32,7 +33,7 @@ class ArticleSummarySerializer(serializers.ModelSerializer):
         return f"/perfis/{obj.author.profile.public_id}"
 
     def get_cover_url(self, obj):
-        return obj.cover.file.url if obj.cover else None
+        return public_image_url(obj.cover.file) if obj.cover else None
 
     def get_has_video(self, obj):
         return bool(obj.video_url)

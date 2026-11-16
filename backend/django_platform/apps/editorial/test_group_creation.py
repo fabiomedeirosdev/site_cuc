@@ -126,6 +126,10 @@ class GroupCreationTests(TestCase):
             self.assertFalse(image.getexif())
         public = self.client.get(f"/api/groups/{group.slug}").json()
         self.assertEqual(public["cover_url"], data["cover_url"])
+        image = self.client.get(public["cover_url"])
+        self.assertEqual(image.status_code, 200)
+        self.assertEqual(image["Content-Type"], "image/webp")
+        self.assertEqual(b"".join(image.streaming_content)[:4], b"RIFF")
         self.assertEqual(public["cover_alt"], "Pessoas em oração")
         self.assertNotIn("custom_cover", public)
 

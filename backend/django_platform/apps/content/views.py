@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from apps.accounts.views import AccountAPIView
+from apps.core.media import public_image_url
 from .images import clean_cover
 from .models import CoverImage
 from .policies import author_groups, editable_articles, published_articles
@@ -92,4 +93,4 @@ class CoverUploadView(AccountAPIView):
         if not upload:
             raise ValidationError({"file": "Escolha uma foto de capa."})
         cover = CoverImage.objects.create(owner=request.user, file=clean_cover(upload))
-        return Response({"id": str(cover.pk), "url": cover.file.url}, status=201)
+        return Response({"id": str(cover.pk), "url": public_image_url(cover.file)}, status=201)

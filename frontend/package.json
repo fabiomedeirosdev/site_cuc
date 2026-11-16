@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test scripts/api-client.test.mjs",
+    "test": "node --test scripts/api-client.test.mjs scripts/pwa.test.mjs",
     "test:api": "node scripts/smoke-api.mjs",
     "test:browser": "playwright test",
     "test:management": "playwright test --config playwright.management.config.js",

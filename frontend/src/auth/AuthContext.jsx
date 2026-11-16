@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { api } from "../api.js";
+import { clearPushNotifications, syncPushSubscription } from "../pwa.js";
 
 const AuthContext = createContext(null);
 const guest = { status: "guest", user: null, error: null };
@@ -10,6 +11,12 @@ export function AuthProvider({ children }) {
   const pending = useRef(null);
   const generation = useRef(0);
   const setAuth = useCallback((value) => { current.current = value; setState(value); }, []);
+  useEffect(() => {
+    if (["authenticated", "guest"].includes(state.status)) {
+      // Sync an existing opt-in only; never request permission during login.
+      syncPushSubscription(api).catch(() => {});
+    }
+  }, [state.status, state.user?.id]);
   const ensureSession = useCallback((force = false) => {
     if (pending.current) return pending.current;
     if (!force && ["authenticated", "guest"].includes(current.current.status)) return Promise.resolve(current.current.user);
@@ -56,6 +63,7 @@ export function AuthProvider({ children }) {
       if (current.current.status !== "guest") throw error;
     }
     setAuth(guest);
+    clearPushNotifications().catch(() => {});
   };
   const updateProfile = async (profile) => {
     try {

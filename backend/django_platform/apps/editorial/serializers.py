@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from apps.core.media import public_image_url
 from .models import EditorialGroup, Membership
 from .policies import public_name
 
@@ -34,7 +35,7 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "slug", "description", "cover", "cover_url", "cover_alt", "team", "address", "whatsapp", "video_embed_url"]
 
     def get_cover_url(self, obj):
-        return obj.custom_cover.url if obj.custom_cover else None
+        return public_image_url(obj.custom_cover)
 
     def get_video_embed_url(self, obj):
         from apps.content.video import embed_url

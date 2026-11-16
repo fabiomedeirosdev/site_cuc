@@ -89,3 +89,38 @@ test("concurrent anonymous writes share CSRF acquisition then refresh after comp
   assert.equal(reads, 2);
   assert.equal(sent[2], "token-2");
 });
+
+
+test("image URLs use the API origin across nested lists without changing other links", async () => {
+  const api = createApiClient({ mediaBaseUrl: "https://api.rhemacuc.com.br/", fetchImpl: async () => new Response(JSON.stringify({
+    results: [{ cover_url: "/api/public-images/covers/test.webp", avatar_url: "/api/profiles/id/photo?v=123", photo_url: "/media/old.jpg", image_url: "/api/communication-images/notices/1", profile_url: "/perfis/id", website: "https://example.com" }],
+    cover_url: null, photo_url: "https://cdn.example.com/photo.jpg",
+  })) });
+  const data = await api.getArticles();
+  assert.equal(data.results[0].cover_url, "https://api.rhemacuc.com.br/api/public-images/covers/test.webp");
+  assert.equal(data.results[0].avatar_url, "https://api.rhemacuc.com.br/api/profiles/id/photo?v=123");
+  assert.equal(data.results[0].photo_url, "https://api.rhemacuc.com.br/media/old.jpg");
+  assert.equal(data.results[0].image_url, "https://api.rhemacuc.com.br/api/communication-images/notices/1");
+  assert.equal(data.results[0].profile_url, "/perfis/id");
+  assert.equal(data.results[0].website, "https://example.com");
+  assert.equal(data.cover_url, null);
+  assert.equal(data.photo_url, "https://cdn.example.com/photo.jpg");
+});
+
+test("uploaded cover preview uses the image origin", async () => {
+  const api = createApiClient({ mediaBaseUrl: "https://api.rhemacuc.com.br", fetchImpl: async (url) => new Response(JSON.stringify(
+    url.endsWith("/csrf") ? { csrf_token: "test" } : { id: "cover", url: "/api/public-images/covers/photo.webp" }
+  )) });
+  const cover = await api.uploadCover(new Blob(["image"], { type: "image/webp" }));
+  assert.equal(cover.url, "https://api.rhemacuc.com.br/api/public-images/covers/photo.webp");
+});
+
+test("image origins preserve local proxy and configured hosting", async () => {
+  const { mediaOrigin, mediaUrl } = await import("../src/media-url.js");
+  assert.equal(mediaOrigin("", "localhost"), "");
+  assert.equal(mediaOrigin("", "127.0.0.1"), "");
+  assert.equal(mediaOrigin("", "rhemacuc.com.br"), "https://api.rhemacuc.com.br");
+  assert.equal(mediaOrigin("https://custom.example/", "rhemacuc.com.br"), "https://custom.example");
+  assert.equal(mediaUrl("blob:preview", "https://api.example"), "blob:preview");
+  assert.equal(mediaUrl("/assets/logo.png", "https://api.example"), "/assets/logo.png");
+});

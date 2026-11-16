@@ -84,7 +84,11 @@ class FoundersTests(TestCase):
         data = self.client.get("/api/founders").json()
         self.assertEqual(data["title"], "Nossos fundadores e sua missão")
         self.assertEqual(data["body"], "Primeiro parágrafo.\n\nA história da comunidade.")
-        self.assertTrue(data["photo_url"].startswith("/media/institutional/founders/"))
+        self.assertTrue(data["photo_url"].startswith("/api/public-images/institutional/founders/"))
+        image = self.client.get(data["photo_url"])
+        self.assertEqual(image.status_code, 200)
+        self.assertEqual(image["Content-Type"], "image/jpeg")
+        self.assertEqual(b"".join(image.streaming_content)[:2], b"\xff\xd8")
 
     def test_editing_only_text_keeps_uploaded_photo(self):
         self.login(self.developer)

@@ -14,6 +14,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from apps.accounts.views import AccountAPIView
+from .media import public_image_url
 from apps.billing.models import ConsumerRequest, Subscription
 from apps.communications.models import Campaign, Event, Notice
 from apps.communications.policies import can_manage
@@ -185,7 +186,7 @@ class GroupInput(serializers.ModelSerializer):
         read_only_fields = ["id", "slug", "cover_url"]
 
     def get_cover_url(self, obj):
-        return obj.custom_cover.url if obj.custom_cover else None
+        return public_image_url(obj.custom_cover)
 
     def validate_whatsapp(self, value):
         import re

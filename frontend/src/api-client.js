@@ -1,3 +1,5 @@
+import { mediaUrl, resolveImageUrls } from "./media-url.js";
+
 export class ApiError extends Error {
   constructor(status, data) {
     const messages = (value) => typeof value === "string" ? [value] : value && typeof value === "object" ? Object.values(value).flatMap(messages) : [];
@@ -6,7 +8,7 @@ export class ApiError extends Error {
   }
 }
 
-export function createApiClient({ baseUrl = "", fetchImpl = globalThis.fetch } = {}) {
+export function createApiClient({ baseUrl = "", mediaBaseUrl = baseUrl, fetchImpl = globalThis.fetch } = {}) {
   const base = baseUrl.replace(/\/+$/, "");
   let pendingCsrf = null;
 
@@ -29,7 +31,7 @@ export function createApiClient({ baseUrl = "", fetchImpl = globalThis.fetch } =
     if (!response.ok) {
       throw new ApiError(response.status, data);
     }
-    return data;
+    return resolveImageUrls(data, mediaBaseUrl);
   }
 
   async function write(path, method, body, options = {}) {
@@ -44,6 +46,9 @@ export function createApiClient({ baseUrl = "", fetchImpl = globalThis.fetch } =
   }
 
   return {
+    getPushConfig: (options) => request("/api/push/config", options),
+    savePushSubscription: (data) => write("/api/push/subscription", "POST", data),
+    deletePushSubscription: (data) => write("/api/push/subscription", "DELETE", data),
     getNotifications: (options) => request("/api/notifications", options),
     readNotifications: (seen_until) => write("/api/notifications", "POST", { seen_until }),
     getInbox: (page = 1, status = "pending", options) => request(`/api/inbox?page=${page}&status=${status}`, options),
@@ -83,7 +88,7 @@ export function createApiClient({ baseUrl = "", fetchImpl = globalThis.fetch } =
     createArticle: (data, options) => write("/api/editorial/articles", "POST", data, options),
     updateArticle: (id, data, options) => write(`/api/editorial/articles/${id}`, "PATCH", data, options),
     deleteArticle: (id, options) => write(`/api/editorial/articles/${id}`, "DELETE", undefined, options),
-    uploadCover: (file, options) => { const form = new FormData(); form.append("file", file); return write("/api/editorial/covers", "POST", form, options); },
+    uploadCover: async (file, options) => { const form = new FormData(); form.append("file", file); const cover = await write("/api/editorial/covers", "POST", form, options); return { ...cover, url: mediaUrl(cover.url, mediaBaseUrl) }; },
     getDashboard: (options) => request("/api/management/dashboard", options),
     getFeaturedArticles: (page = 1, options) => request(`/api/articles?featured=1&page=${page}`, options),
     getHighlightCandidates: (page = 1, options) => request(`/api/management/highlights?page=${page}`, options),

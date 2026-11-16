@@ -1,12 +1,7 @@
-export default function Avatar({ photo, name, className = "" }) {
-  const localPreview = ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
-  const configuredApiOrigin = import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, "");
-  // A prévia usa o proxy local; em produção, preservar o domínio da API.
-  const apiOrigin = configuredApiOrigin || (localPreview ? "" : "https://api.rhemacuc.com.br");
+import { mediaOrigin, mediaUrl } from "../media-url.js";
 
-  const photoUrl = photo?.startsWith("/api/")
-    ? `${apiOrigin}${photo}`
-    : photo;
+export default function Avatar({ photo, name, className = "" }) {
+  const photoUrl = mediaUrl(photo, mediaOrigin(import.meta.env.VITE_API_BASE_URL ?? "", window.location.hostname));
 
   return photoUrl ? (
     <img

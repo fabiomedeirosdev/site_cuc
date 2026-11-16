@@ -6,7 +6,7 @@ O endereço principal será `https://rhemacuc.com.br`. O site e o backend compar
 | --- | --- | --- |
 | Site | `https://rhemacuc.com.br` | `http://127.0.0.1:5173` |
 | API | `https://rhemacuc.com.br/api/...` | `/api/...` no Vite, encaminhado para `127.0.0.1:8000` |
-| Fotos enviadas | `https://rhemacuc.com.br/media/...` | `/media/...` pelo proxy do Vite |
+| Fotos enviadas | `/api/public-images/...` na origem da API | `/api/public-images/...` pelo proxy do Vite |
 | Administração | `https://rhemacuc.com.br/admin/` | `http://127.0.0.1:8000/admin/` |
 
 ## Frontend
@@ -63,3 +63,23 @@ Depois de apontar o DNS, instalar o certificado e iniciar frontend/proxy/backend
 Esta entrega prepara os arquivos e valida o comportamento da aplicação localmente. Não altera DNS, certificados, hospedagem ou cadastros do PagBank e não comprova uma publicação já concluída.
 
 Validação da aplicação: 121 testes Django aprovados, incluindo os cenários de host, HTTPS encaminhado, cookies e CSRF no domínio de produção. Os 8 testes do cliente e o build do frontend também passaram. O arquivo de Nginx ainda exige `nginx -t` e conferência dos caminhos e certificados na hospedagem real.
+
+
+## Entrega de imagens enviadas
+
+Capas de publica??es, fotos dos grupos e dos fundadores usam `/api/public-images/...`.
+A API abre os arquivos no armazenamento existente, tamb?m com `DJANGO_DEBUG=0`;
+n?o ? necess?rio mover ou reenviar as imagens j? gravadas. A rota aceita apenas
+os diret?rios p?blicos `covers/`, `group-covers/` e `institutional/founders/`.
+Fotos de perfil e imagens de comunica??o mant?m suas rotas e regras pr?prias.
+
+O frontend aplica ?s URLs de imagens a mesma origem usada no reparo das fotos de
+perfil: `VITE_API_BASE_URL`, quando definido; proxy relativo no desenvolvimento;
+`https://api.rhemacuc.com.br` em produ??o sem configura??o expl?cita. Em hospedagem
+com API no mesmo dom?nio do site, definir `VITE_API_BASE_URL` para essa origem.
+Isso evita buscar imagens no servidor do React e receber `index.html`.
+
+Para aplicar esta corre??o, publicar o backend atualizado, reiniciar seu processo
+e publicar um novo build do frontend (`npm run build`). A rota `/api/` precisa
+continuar sendo encaminhada ao Django. Conferir no navegador a URL retornada pelo
+upload e seu `Content-Type`; um HTTP 200 com `text/html` n?o confirma uma imagem.

@@ -117,6 +117,10 @@ class ContentTests(TestCase):
         upload = SimpleUploadedFile("review.png", photo_bytes(), "image/png")
         response = self.client.post("/api/editorial/covers", {"file": upload}, format="multipart", HTTP_X_CSRFTOKEN=self.token)
         self.assertEqual(response.status_code, 201)
+        image = self.client.get(response.json()["url"])
+        self.assertEqual(image.status_code, 200)
+        self.assertEqual(image["Content-Type"], "image/webp")
+        self.assertEqual(b"".join(image.streaming_content)[:4], b"RIFF")
         cover_id = response.json()["id"]
         self.assertEqual(self.write("patch", self.path, {"cover": cover_id}).status_code, 200)
         self.session(self.author)

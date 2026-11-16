@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "apps.content.apps.ContentConfig",
     "apps.billing.apps.BillingConfig",
     "apps.communications.apps.CommunicationsConfig",
+    "apps.webpush.apps.WebPushConfig",
 ]
 
 MIDDLEWARE = [
@@ -110,6 +111,10 @@ PAGBANK_CHECKOUT_TOKEN = os.getenv("PAGBANK_CHECKOUT_TOKEN", "")
 PAGBANK_RECURRING_TOKEN = os.getenv("PAGBANK_RECURRING_TOKEN", "")
 PUBLIC_FRONTEND_URL = os.getenv("PUBLIC_FRONTEND_URL", "http://127.0.0.1:5173" if DEBUG else PRODUCTION_ORIGIN).rstrip("/")
 PUBLIC_API_URL = os.getenv("PUBLIC_API_URL", "http://127.0.0.1:8000" if DEBUG else PRODUCTION_ORIGIN).rstrip("/")
+WEBPUSH_ENABLED = os.getenv("WEBPUSH_ENABLED", "0") == "1"
+WEBPUSH_PUBLIC_KEY = os.getenv("WEBPUSH_PUBLIC_KEY", "")
+WEBPUSH_PRIVATE_KEY = os.getenv("WEBPUSH_PRIVATE_KEY", "")
+WEBPUSH_SUBJECT = os.getenv("WEBPUSH_SUBJECT", "")
 SUBSCRIPTION_AMOUNT_CENTS = 4800
 BILLING_LEGAL_VERSION = "2026-11-12-v1"
 MERCHANT_LEGAL_NAME = os.getenv("MERCHANT_LEGAL_NAME", "")
@@ -162,6 +167,7 @@ REST_FRAMEWORK = {
         "invitation": "20/hour",
         "billing_webhook": "120/minute",
         "newsletter": "10/hour",
+        "webpush": "30/minute",
     },
 }
 
